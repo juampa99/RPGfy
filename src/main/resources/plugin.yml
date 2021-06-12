@@ -1,0 +1,11 @@
+name: RPGfy
+version: 1.0-SNAPSHOT
+author: Juampa99
+main: git.juampa99.rpgfy.Rpgfy
+api-version: 1.16
+
+commands:
+  mightysword:
+    description: Gives the sender the Mighty Sword item
+    usage: /mightysword
+    permission: rpgfy.mightysword
