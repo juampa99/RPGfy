@@ -15,7 +15,7 @@ class MightySwordCommand : CommandExecutor {
 
         val sword: ItemStack = ItemGenerator.createItem(
             Sword("Mighty Sword", 10.0,
-            lore = "Much mighty, very powerful")
+            lore = listOf("Much mighty, very powerful", "Imbued with the power of dankness"))
         )
 
         sender.inventory.addItem(sword)

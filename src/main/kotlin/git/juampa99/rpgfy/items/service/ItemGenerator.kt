@@ -3,7 +3,6 @@ package git.juampa99.rpgfy.items.service
 import git.juampa99.rpgfy.items.util.ItemPrototype
 import git.juampa99.rpgfy.items.util.Sword
 import git.juampa99.rpgfy.items.util.constants.AttributeStrings
-import git.juampa99.rpgfy.items.util.constants.ItemType
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -30,9 +29,9 @@ object ItemGenerator {
         item.itemMeta = itemMeta
     }
 
-    private fun addLore(item: ItemStack, lore: String) {
+    private fun addLore(item: ItemStack, lore: List<String>) {
         val itemMeta: ItemMeta = item.itemMeta ?: return
-        itemMeta.lore = listOf(lore)
+        itemMeta.lore?.plusAssign(lore)
         item.itemMeta = itemMeta
     }
 
@@ -43,7 +42,7 @@ object ItemGenerator {
     }
 
     private fun createSword(sword: Sword): ItemStack {
-        val item: ItemStack = generateItem(ItemType.SWORD)
+        val item: ItemStack = generateItem(sword.type)
 
         setName(item, sword.name)
         addLore(item, sword.lore)

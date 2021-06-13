@@ -1,0 +1,5 @@
+animal-healthbar-color: green
+monster-healthbar-color: red
+player-healthbar-color: red
+show-pasive-animals-healthbar: false
+separator: ' - '

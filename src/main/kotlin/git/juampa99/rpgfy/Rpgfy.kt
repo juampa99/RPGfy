@@ -2,6 +2,7 @@ package git.juampa99.rpgfy
 
 import git.juampa99.rpgfy.command.MightySwordCommand
 import git.juampa99.rpgfy.healthbar.events.HealthBarListener
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.plugin.java.JavaPlugin
@@ -15,6 +16,8 @@ class Rpgfy : JavaPlugin() {
 
     override fun onEnable() {
         logger.info("Loading Rpgfy...")
+
+        saveDefaultConfig()
 
         plugin = this
 
