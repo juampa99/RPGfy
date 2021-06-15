@@ -3,7 +3,6 @@ package git.juampa99.rpgfy.utils.string
 /**
  * Usable for name tags
  * */
-typealias Color = String
 object ColorCodes {
 
     const val BLACK: Color = "§0"
@@ -45,3 +44,5 @@ object ColorCodes {
     }
 
 }
+
+typealias Color = String

@@ -1,8 +1,7 @@
 package git.juampa99.rpgfy
 
-import git.juampa99.rpgfy.command.MightySwordCommand
-import git.juampa99.rpgfy.healthbar.events.HealthBarListener
-import org.bukkit.configuration.file.FileConfiguration
+import git.juampa99.rpgfy.command.CreateItemCommand
+import git.juampa99.rpgfy.healthbar.event.HealthBarListener
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.plugin.java.JavaPlugin
@@ -24,7 +23,8 @@ class Rpgfy : JavaPlugin() {
         // Register event listener
         server.pluginManager.registerEvents(HealthBarListener(), this)
 
-        this.getCommand("mightysword")?.setExecutor(MightySwordCommand())
+        // Register commands
+        this.getCommand("createitem")?.setExecutor(CreateItemCommand())
     }
 
     override fun onDisable() {

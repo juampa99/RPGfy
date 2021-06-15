@@ -5,7 +5,10 @@ main: git.juampa99.rpgfy.Rpgfy
 api-version: 1.16
 
 commands:
-  mightysword:
-    description: Gives the sender the Mighty Sword item
-    usage: /mightysword
-    permission: rpgfy.mightysword
+  createitem:
+    description: Gives a custom weapon or armor to the caller
+    usage: >
+      armor <type> <name> <armor?> <armor_toughness?> or
+      weapon <name> <damage?> <attack_speed?>
+      (Parameters marked with "?" are optional)
+    permission: rpgfy.createitem

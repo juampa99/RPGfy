@@ -1,4 +1,4 @@
-package git.juampa99.rpgfy.healthbar.events
+package git.juampa99.rpgfy.healthbar.event
 
 import git.juampa99.rpgfy.healthbar.service.HealthBarUtils.updateHealthBar
 import org.bukkit.Material

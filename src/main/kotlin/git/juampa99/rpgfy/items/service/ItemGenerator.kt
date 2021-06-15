@@ -1,7 +1,8 @@
 package git.juampa99.rpgfy.items.service
 
-import git.juampa99.rpgfy.items.util.ItemPrototype
-import git.juampa99.rpgfy.items.util.Sword
+import git.juampa99.rpgfy.items.entity.ItemPrototype
+import git.juampa99.rpgfy.items.entity.armor.ArmorPiece
+import git.juampa99.rpgfy.items.entity.weapon.Sword
 import git.juampa99.rpgfy.items.util.constants.AttributeStrings
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
@@ -41,13 +42,29 @@ object ItemGenerator {
         item.itemMeta = itemMeta
     }
 
-    private fun createSword(sword: Sword): ItemStack {
-        val item: ItemStack = generateItem(sword.type)
+    private fun createItem(name: String, lore: List<String>, type: Material): ItemStack {
+        val item: ItemStack = generateItem(type)
 
-        setName(item, sword.name)
-        addLore(item, sword.lore)
+        setName(item, name)
+        addLore(item, lore)
+
+        return item
+    }
+
+    private fun createSword(sword: Sword): ItemStack {
+        val item: ItemStack = createItem(sword.name, sword.lore, sword.type)
+
         addAttribute(item, sword.attackSpeed, AttributeStrings.Item.ATTACK_SPEED, EquipmentSlot.HAND)
         addAttribute(item, sword.damage, AttributeStrings.Item.ATTACK_DAMAGE, EquipmentSlot.HAND)
+
+        return item
+    }
+
+    private fun createArmorPiece(armorPiece: ArmorPiece): ItemStack {
+        val item: ItemStack = createItem(armorPiece.name, armorPiece.lore, armorPiece.type)
+
+        addAttribute(item, armorPiece.armor, AttributeStrings.Item.ARMOR, armorPiece.slot)
+        addAttribute(item, armorPiece.armorToughness, AttributeStrings.Item.ARMOR, armorPiece.slot)
 
         return item
     }
@@ -60,6 +77,7 @@ object ItemGenerator {
     fun createItem(item: ItemPrototype): ItemStack {
         return when(item) {
             is Sword -> createSword(item)
+            is ArmorPiece -> createArmorPiece(item)
             else -> ItemStack(Material.STICK)
         }
     }
