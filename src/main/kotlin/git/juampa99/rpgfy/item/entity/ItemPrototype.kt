@@ -1,4 +1,4 @@
-package git.juampa99.rpgfy.items.entity
+package git.juampa99.rpgfy.item.entity
 
 import org.bukkit.Material
 import org.bukkit.inventory.EquipmentSlot

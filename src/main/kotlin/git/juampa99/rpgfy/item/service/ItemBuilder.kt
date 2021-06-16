@@ -1,29 +1,31 @@
-package git.juampa99.rpgfy.items.service
+package git.juampa99.rpgfy.item.service
 
-import git.juampa99.rpgfy.items.entity.ItemPrototype
-import git.juampa99.rpgfy.items.entity.armor.ArmorPiece
-import git.juampa99.rpgfy.items.entity.weapon.Sword
-import git.juampa99.rpgfy.items.util.constants.AttributeStrings
+import git.juampa99.rpgfy.item.entity.ItemPrototype
+import git.juampa99.rpgfy.item.entity.armor.ArmorPiece
+import git.juampa99.rpgfy.item.entity.weapon.Weapon
+import git.juampa99.rpgfy.item.util.constants.AttributeStrings
+import net.minecraft.server.v1_16_R3.NBTTagCompound
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
+import java.io.InvalidClassException
 import java.util.*
+import kotlin.jvm.Throws
 
-object ItemGenerator {
+object ItemBuilder {
 
-    private fun generateItem(type: Material): ItemStack {
-        return ItemStack(type, 1)
-    }
+    class InvalidItemException(message: String) : Exception(message)
 
     private fun addAttribute(item: ItemStack, amount: Double, attribute: String, slot: EquipmentSlot): Unit {
         val itemMeta: ItemMeta = item.itemMeta ?: return
 
-        val attMod: AttributeModifier =
-            AttributeModifier(
-                UUID.randomUUID(), attribute,
+        val attMod =
+            AttributeModifier(UUID.randomUUID(), attribute,
                 amount, AttributeModifier.Operation.ADD_NUMBER, slot)
 
         itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, attMod)
@@ -43,7 +45,7 @@ object ItemGenerator {
     }
 
     private fun createItem(name: String, lore: List<String>, type: Material): ItemStack {
-        val item: ItemStack = generateItem(type)
+        val item = ItemStack(type, 1)
 
         setName(item, name)
         addLore(item, lore)
@@ -51,11 +53,11 @@ object ItemGenerator {
         return item
     }
 
-    private fun createSword(sword: Sword): ItemStack {
-        val item: ItemStack = createItem(sword.name, sword.lore, sword.type)
+    private fun createWeapon(weapon: Weapon): ItemStack {
+        val item: ItemStack = createItem(weapon.name, weapon.lore, weapon.type)
 
-        addAttribute(item, sword.attackSpeed, AttributeStrings.Item.ATTACK_SPEED, EquipmentSlot.HAND)
-        addAttribute(item, sword.damage, AttributeStrings.Item.ATTACK_DAMAGE, EquipmentSlot.HAND)
+        addAttribute(item, weapon.attackSpeed, AttributeStrings.Item.ATTACK_SPEED, weapon.slot)
+        addAttribute(item, weapon.damage, AttributeStrings.Item.ATTACK_DAMAGE, weapon.slot)
 
         return item
     }
@@ -70,15 +72,17 @@ object ItemGenerator {
     }
 
     /**
-     * Generates item based on the config specified in item
+     * Generates ItemStack based on the config specified in item
      * @param item item config
+     * @throws InvalidItemException
      * @return generated item
      * */
+    @Throws(InvalidItemException::class)
     fun createItem(item: ItemPrototype): ItemStack {
         return when(item) {
-            is Sword -> createSword(item)
+            is Weapon -> createWeapon(item)
             is ArmorPiece -> createArmorPiece(item)
-            else -> ItemStack(Material.STICK)
+            else -> throw InvalidItemException("No type of weapon matches input")
         }
     }
 }

@@ -1,6 +1,6 @@
-package git.juampa99.rpgfy.items.entity.weapon
+package git.juampa99.rpgfy.item.entity.weapon
 
-import git.juampa99.rpgfy.items.util.constants.ItemType
+import git.juampa99.rpgfy.item.util.constants.ItemType
 import org.bukkit.inventory.EquipmentSlot
 
 class Sword(name: String, damage: Double = 1.0,

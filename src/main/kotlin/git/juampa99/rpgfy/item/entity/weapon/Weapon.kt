@@ -1,6 +1,6 @@
-package git.juampa99.rpgfy.items.entity.weapon
+package git.juampa99.rpgfy.item.entity.weapon
 
-import git.juampa99.rpgfy.items.entity.ItemPrototype
+import git.juampa99.rpgfy.item.entity.ItemPrototype
 import org.bukkit.Material
 import org.bukkit.inventory.EquipmentSlot
 

@@ -1,18 +1,15 @@
 package git.juampa99.rpgfy.command
 
-import git.juampa99.rpgfy.items.entity.ItemPrototype
-import git.juampa99.rpgfy.items.entity.armor.*
-import git.juampa99.rpgfy.items.service.ItemGenerator
-import git.juampa99.rpgfy.items.entity.weapon.Sword
-import git.juampa99.rpgfy.items.entity.weapon.Weapon
-import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode
+import git.juampa99.rpgfy.item.entity.ItemPrototype
+import git.juampa99.rpgfy.item.entity.armor.*
+import git.juampa99.rpgfy.item.service.ItemBuilder
+import git.juampa99.rpgfy.item.entity.weapon.Sword
+import git.juampa99.rpgfy.item.entity.weapon.Weapon
 import org.bukkit.Bukkit.getLogger
-import org.bukkit.block.Chest
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 
 class CreateItemCommand : CommandExecutor {
 
@@ -59,9 +56,9 @@ class CreateItemCommand : CommandExecutor {
         val itemPrototype: ItemPrototype
 
         try {
-            itemPrototype = when {
-                (args[0]).lowercase() == "armor" -> createArmor(args)
-                (args[0]).lowercase() == "weapon" -> createWeapon(args)
+            itemPrototype = when((args[0]).lowercase()) {
+                "armor" -> createArmor(args)
+                "weapon" -> createWeapon(args)
                 else -> return false
             }
         }
@@ -69,7 +66,7 @@ class CreateItemCommand : CommandExecutor {
             return false
         }
 
-        sender.inventory.addItem(ItemGenerator.createItem(itemPrototype))
+        sender.inventory.addItem(ItemBuilder.createItem(itemPrototype))
 
         return true
     }
