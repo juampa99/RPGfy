@@ -4,16 +4,12 @@ import git.juampa99.rpgfy.item.entity.ItemPrototype
 import git.juampa99.rpgfy.item.entity.armor.ArmorPiece
 import git.juampa99.rpgfy.item.entity.weapon.Weapon
 import git.juampa99.rpgfy.item.util.constants.AttributeStrings
-import net.minecraft.server.v1_16_R3.NBTTagCompound
-import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
-import java.io.InvalidClassException
 import java.util.*
 import kotlin.jvm.Throws
 
