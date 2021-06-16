@@ -1,33 +1,33 @@
-package git.juampa99.rpgfy.command
+package git.juampa99.rpgfy.command.gear
 
-import git.juampa99.rpgfy.item.entity.ItemPrototype
-import git.juampa99.rpgfy.item.entity.armor.*
-import git.juampa99.rpgfy.item.service.ItemBuilder
-import git.juampa99.rpgfy.item.entity.weapon.Sword
-import git.juampa99.rpgfy.item.entity.weapon.Weapon
+import git.juampa99.rpgfy.gear.entity.GearPrototype
+import git.juampa99.rpgfy.gear.entity.armor.*
+import git.juampa99.rpgfy.gear.service.ItemBuilder
+import git.juampa99.rpgfy.gear.entity.weapon.Sword
+import git.juampa99.rpgfy.gear.entity.weapon.Weapon
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class CreateItemCommand : CommandExecutor {
+class SpawnGearCommand : CommandExecutor {
 
-    private fun createWeapon(args: Array<out String>): ItemPrototype {
-        val itemName: String = args[1]
-        val weapon: Weapon = Sword(itemName)
+    private fun createWeapon(args: Array<out String>): GearPrototype {
+        val itemName: String = args[2]
 
-        if(args.size >= 3) {
-            weapon.damage = args[2].toDouble()
+        val weapon: Weapon = when(args[1].lowercase()) {
+            "sword" -> Sword(itemName)
+            else -> throw RuntimeException()
         }
-        if(args.size >= 4) {
-            weapon.attackSpeed = args[3].toDouble()
-        }
+
+        if(args.size >= 4) weapon.damage = args[3].toDouble()
+        if(args.size >= 5) weapon.attackSpeed = args[4].toDouble()
 
         return weapon
     }
 
-    private fun createArmor(args: Array<out String>): ItemPrototype {
+    private fun createArmor(args: Array<out String>): GearPrototype {
         val itemName: String = args[2]
 
         val armor: ArmorPiece = when(args[1].lowercase()) {
@@ -46,17 +46,17 @@ class CreateItemCommand : CommandExecutor {
 
     /**
      * armor <type> <name> <armor?> <armor_toughness?>
-     * weapon <name> <damage?> <attack_speed?
+     * weapon <type> <name> <damage?> <attack_speed?
      * */
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(sender !is Player) return false
         if(args.size < 2) return false
         getLogger().info(args[0])
 
-        val itemPrototype: ItemPrototype
+        val gearPrototype: GearPrototype
 
         try {
-            itemPrototype = when((args[0]).lowercase()) {
+            gearPrototype = when((args[0]).lowercase()) {
                 "armor" -> createArmor(args)
                 "weapon" -> createWeapon(args)
                 else -> return false
@@ -66,7 +66,7 @@ class CreateItemCommand : CommandExecutor {
             return false
         }
 
-        sender.inventory.addItem(ItemBuilder.createItem(itemPrototype))
+        sender.inventory.addItem(ItemBuilder.createItem(gearPrototype))
 
         return true
     }

@@ -4,7 +4,7 @@ RPGfy is a spigot plugin that adds a compendium of RPG elements to minecraft.
 
 Features: 
 * Customizable healthbars (see config.yml)
-* Custom item generator (/createitem command)
+* Custom item generator (/spawngear command)
 
 Upcoming features:
 * Drop tables

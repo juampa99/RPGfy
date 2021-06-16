@@ -1,6 +1,6 @@
 package git.juampa99.rpgfy
 
-import git.juampa99.rpgfy.command.CreateItemCommand
+import git.juampa99.rpgfy.command.gear.SpawnGearCommand
 import git.juampa99.rpgfy.healthbar.event.HealthBarListener
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
@@ -24,7 +24,7 @@ class Rpgfy : JavaPlugin() {
         server.pluginManager.registerEvents(HealthBarListener(), this)
 
         // Register commands
-        this.getCommand("createitem")?.setExecutor(CreateItemCommand())
+        this.getCommand("spawngear")?.setExecutor(SpawnGearCommand())
     }
 
     override fun onDisable() {

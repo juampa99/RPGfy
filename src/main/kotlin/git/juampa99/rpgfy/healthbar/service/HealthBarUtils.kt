@@ -61,8 +61,6 @@ object HealthBarUtils {
                 "${FormatCodes.RESET}$separator$entityName"
     }
 
-
-
     /**
      * Updates health bar for entity
      * @param entity Entity to update health bar of

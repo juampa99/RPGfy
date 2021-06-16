@@ -1,9 +1,9 @@
-package git.juampa99.rpgfy.item.service
+package git.juampa99.rpgfy.gear.service
 
-import git.juampa99.rpgfy.item.entity.ItemPrototype
-import git.juampa99.rpgfy.item.entity.armor.ArmorPiece
-import git.juampa99.rpgfy.item.entity.weapon.Weapon
-import git.juampa99.rpgfy.item.util.constants.AttributeStrings
+import git.juampa99.rpgfy.gear.entity.GearPrototype
+import git.juampa99.rpgfy.gear.entity.armor.ArmorPiece
+import git.juampa99.rpgfy.gear.entity.weapon.Weapon
+import git.juampa99.rpgfy.gear.util.constants.AttributeStrings
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -69,15 +69,15 @@ object ItemBuilder {
 
     /**
      * Generates ItemStack based on the config specified in item
-     * @param item item config
+     * @param gear item config
      * @throws InvalidItemException
      * @return generated item
      * */
     @Throws(InvalidItemException::class)
-    fun createItem(item: ItemPrototype): ItemStack {
-        return when(item) {
-            is Weapon -> createWeapon(item)
-            is ArmorPiece -> createArmorPiece(item)
+    fun createItem(gear: GearPrototype): ItemStack {
+        return when(gear) {
+            is Weapon -> createWeapon(gear)
+            is ArmorPiece -> createArmorPiece(gear)
             else -> throw InvalidItemException("No type of weapon matches input")
         }
     }

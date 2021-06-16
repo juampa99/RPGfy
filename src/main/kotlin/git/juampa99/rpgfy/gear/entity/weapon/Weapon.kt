@@ -1,10 +1,10 @@
-package git.juampa99.rpgfy.item.entity.weapon
+package git.juampa99.rpgfy.gear.entity.weapon
 
-import git.juampa99.rpgfy.item.entity.ItemPrototype
+import git.juampa99.rpgfy.gear.entity.GearPrototype
 import org.bukkit.Material
 import org.bukkit.inventory.EquipmentSlot
 
 abstract class Weapon(name: String, var damage: Double,
                       var attackSpeed: Double, lore: List<String>,
                       type: Material, slot: EquipmentSlot)
-    : ItemPrototype(name, lore, type, slot)
+    : GearPrototype(name, lore, type, slot)

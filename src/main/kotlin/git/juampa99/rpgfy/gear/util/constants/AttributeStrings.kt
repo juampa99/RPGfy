@@ -1,4 +1,4 @@
-package git.juampa99.rpgfy.item.util.constants
+package git.juampa99.rpgfy.gear.util.constants
 
 /**
  * Use for "name" parameter of AttributeModifier
