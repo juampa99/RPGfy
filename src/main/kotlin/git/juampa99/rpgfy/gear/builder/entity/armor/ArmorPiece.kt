@@ -1,6 +1,6 @@
-package git.juampa99.rpgfy.gear.entity.armor
+package git.juampa99.rpgfy.gear.builder.entity.armor
 
-import git.juampa99.rpgfy.gear.entity.GearPrototype
+import git.juampa99.rpgfy.gear.builder.entity.GearPrototype
 import org.bukkit.Material
 import org.bukkit.inventory.EquipmentSlot
 

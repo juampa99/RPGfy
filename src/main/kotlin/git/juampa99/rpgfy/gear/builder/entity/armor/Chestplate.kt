@@ -1,6 +1,6 @@
-package git.juampa99.rpgfy.gear.entity.armor
+package git.juampa99.rpgfy.gear.builder.entity.armor
 
-import git.juampa99.rpgfy.gear.util.constants.ItemType
+import git.juampa99.rpgfy.gear.builder.util.constants.ItemType
 import org.bukkit.inventory.EquipmentSlot
 
 open class Chestplate(name: String, armor: Double = 0.0,

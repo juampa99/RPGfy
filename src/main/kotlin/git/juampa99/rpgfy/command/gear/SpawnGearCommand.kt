@@ -1,10 +1,10 @@
 package git.juampa99.rpgfy.command.gear
 
-import git.juampa99.rpgfy.gear.entity.GearPrototype
-import git.juampa99.rpgfy.gear.entity.armor.*
-import git.juampa99.rpgfy.gear.service.ItemBuilder
-import git.juampa99.rpgfy.gear.entity.weapon.Sword
-import git.juampa99.rpgfy.gear.entity.weapon.Weapon
+import git.juampa99.rpgfy.gear.builder.entity.GearPrototype
+import git.juampa99.rpgfy.gear.builder.entity.armor.*
+import git.juampa99.rpgfy.gear.builder.service.ItemBuilder
+import git.juampa99.rpgfy.gear.builder.entity.weapon.Sword
+import git.juampa99.rpgfy.gear.builder.entity.weapon.Weapon
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor

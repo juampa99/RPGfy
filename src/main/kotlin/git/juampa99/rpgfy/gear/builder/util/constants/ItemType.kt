@@ -1,4 +1,4 @@
-package git.juampa99.rpgfy.gear.util.constants
+package git.juampa99.rpgfy.gear.builder.util.constants
 
 import org.bukkit.Material
 

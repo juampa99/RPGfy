@@ -5,9 +5,10 @@ main: git.juampa99.rpgfy.Rpgfy
 api-version: 1.16
 
 commands:
-  createitem:
+  spawngear:
     description: Gives a custom weapon or armor to the caller
-    usage: "/spawngear armor <type> <name> <armor?> <armor_toughness?>
-            /spawngear weapon <name> <damage?> <attack_speed?>
-            (Parameters marked with "?" are optional)"
+    usage: >
+          /spawngear armor <type> <name> <armor?> <armor_toughness?>
+          /spawngear weapon <type> <name> <damage?> <attack_speed?>
+          (Parameters marked with "?" are optional)
     permission: rpgfy.spawngear

@@ -1,9 +1,11 @@
-package git.juampa99.rpgfy.gear.service
+package git.juampa99.rpgfy.gear.builder.service
 
-import git.juampa99.rpgfy.gear.entity.GearPrototype
-import git.juampa99.rpgfy.gear.entity.armor.ArmorPiece
-import git.juampa99.rpgfy.gear.entity.weapon.Weapon
-import git.juampa99.rpgfy.gear.util.constants.AttributeStrings
+import git.juampa99.rpgfy.gear.effect.entity.WeaponEffectEnum
+import git.juampa99.rpgfy.gear.effect.service.GearEffectService
+import git.juampa99.rpgfy.gear.builder.entity.GearPrototype
+import git.juampa99.rpgfy.gear.builder.entity.armor.ArmorPiece
+import git.juampa99.rpgfy.gear.builder.entity.weapon.Weapon
+import git.juampa99.rpgfy.gear.builder.util.constants.AttributeStrings
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -55,7 +57,7 @@ object ItemBuilder {
         addAttribute(item, weapon.attackSpeed, AttributeStrings.Item.ATTACK_SPEED, weapon.slot)
         addAttribute(item, weapon.damage, AttributeStrings.Item.ATTACK_DAMAGE, weapon.slot)
 
-        return item
+        return GearEffectService.addEffects(item, mapOf(WeaponEffectEnum.SLOWNESS to 1))
     }
 
     private fun createArmorPiece(armorPiece: ArmorPiece): ItemStack {

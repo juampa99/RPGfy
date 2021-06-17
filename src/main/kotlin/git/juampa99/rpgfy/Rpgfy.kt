@@ -1,6 +1,7 @@
 package git.juampa99.rpgfy
 
 import git.juampa99.rpgfy.command.gear.SpawnGearCommand
+import git.juampa99.rpgfy.gear.effect.event.EffectListener
 import git.juampa99.rpgfy.healthbar.event.HealthBarListener
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
@@ -22,6 +23,7 @@ class Rpgfy : JavaPlugin() {
 
         // Register event listener
         server.pluginManager.registerEvents(HealthBarListener(), this)
+        server.pluginManager.registerEvents(EffectListener(), this)
 
         // Register commands
         this.getCommand("spawngear")?.setExecutor(SpawnGearCommand())
