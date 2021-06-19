@@ -1,7 +1,9 @@
 package git.juampa99.rpgfy
 
 import git.juampa99.rpgfy.command.gear.SpawnGearCommand
+import git.juampa99.rpgfy.gear.effect.entity.SlownessEffect
 import git.juampa99.rpgfy.gear.effect.event.EffectListener
+import git.juampa99.rpgfy.gear.effect.registry.EffectManager
 import git.juampa99.rpgfy.healthbar.event.HealthBarListener
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
@@ -20,6 +22,9 @@ class Rpgfy : JavaPlugin() {
         saveDefaultConfig()
 
         plugin = this
+
+        // Register effects this should be done somewhere else
+        EffectManager.register(SlownessEffect)
 
         // Register event listener
         server.pluginManager.registerEvents(HealthBarListener(), this)

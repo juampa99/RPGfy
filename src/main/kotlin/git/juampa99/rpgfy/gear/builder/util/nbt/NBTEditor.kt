@@ -7,6 +7,12 @@ import org.bukkit.inventory.ItemStack
 
 object NBTEditor {
 
+    /**
+     * Returns a new stack with the added compound in the tag named tagName
+     * @param itemStack
+     * @param newComp
+     * @param tagName name of the tag to store the compound on
+     * */
     private fun newStackFrom(itemStack: ItemStack, newComp: NBTTagCompound, tagName: String): ItemStack {
         val nmsStack = CraftItemStack.asNMSCopy(itemStack)
         val tagList = NBTTagList()
@@ -56,17 +62,28 @@ object NBTEditor {
      * @return true if the key exists, false if item has no tags or if the key doesnt exist
      * */
     fun hasKeyOnTag(itemStack: ItemStack, tagName: String, key: String): Boolean {
+        // If the tag doesnt exist, the key doesnt exist either
+        if(!hasKey(itemStack, tagName)) return false
         val nmsStack = CraftItemStack.asNMSCopy(itemStack)
-        // If the item has no tag, the key doesnt exist
         val tag = nmsStack.tag ?: return false
         // getList needs an identifier to cast the result to, 10 is the id for Compound,
         // see the spigot forum for more details
         val compoundIntIdentifier = 10
         val compound = tag.getList(tagName, compoundIntIdentifier)
         val parsedMap = parseNbtTagList(compound)
-        getLogger().info(parsedMap.toString())
 
         return parsedMap.containsKey(key)
+    }
+
+    fun getKeysOnTag(itemStack: ItemStack, tagName: String): Map<String, String> {
+        val nmsStack = CraftItemStack.asNMSCopy(itemStack)
+        val tag = nmsStack.tag ?: return mutableMapOf()
+        // getList needs an identifier to cast the result to, 10 is the id for Compound,
+        // see the spigot forum for more details
+        val compoundIntIdentifier = 10
+        val compound = tag.getList(tagName, compoundIntIdentifier)
+
+        return parseNbtTagList(compound)
     }
 
     /**

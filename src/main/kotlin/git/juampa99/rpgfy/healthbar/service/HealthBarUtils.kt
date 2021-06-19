@@ -33,8 +33,10 @@ object HealthBarUtils {
      * @param maxHealth Number on the right side of the slash
      * @return red string of the form [currentHealth/maxHealth]
      * */
-    private fun generateHealthBar(currentHealth: Double, maxHealth: Double, color: Color): String {
-        return color + "[${floor(currentHealth)}/${maxHealth}]"
+    private fun generateHealthBar(currentHealth: Double,
+                                  potionEffects: List<String>, maxHealth: Double, color: Color): String {
+        return (color + "[${floor(currentHealth)}/${maxHealth}] " +
+        ColorCodes.DARK_BLUE + potionEffects.joinToString("/"))
     }
 
     /**
@@ -46,10 +48,18 @@ object HealthBarUtils {
         val maxHealth: Double? = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value
         val currentHealth: Double = entity.health
         val entityName: String = extractName(entity.name)
+        // This could crash if configs are missing
         val hbColor: Color = when(entity) {
             is Monster -> plugin?.config?.get("monster-healthbar-color").toString()
             is Player -> plugin?.config?.get("player-healthbar-color").toString()
             else -> plugin?.config?.get("animal-healthbar-color").toString()
+        }
+        val potionEffects = entity.activePotionEffects
+        // This maps strings of the form EXAMPLE_STRING to "Example String"
+        val potionEffectNames = potionEffects.map { effect ->
+            effect.type.name.split("_").joinToString(" ") {
+                it.toLowerCase().capitalize()
+            }
         }
 
         if(maxHealth == null) {
@@ -57,7 +67,7 @@ object HealthBarUtils {
             return ""
         }
 
-        return generateHealthBar(currentHealth, maxHealth, getColorConstant(hbColor)) +
+        return generateHealthBar(currentHealth, potionEffectNames, maxHealth, getColorConstant(hbColor)) +
                 "${FormatCodes.RESET}$separator$entityName"
     }
 
