@@ -1,9 +1,9 @@
 package git.juampa99.rpgfy
 
 import git.juampa99.rpgfy.command.gear.SpawnGearCommand
-import git.juampa99.rpgfy.gear.effect.entity.SlownessEffect
-import git.juampa99.rpgfy.gear.effect.event.EffectListener
-import git.juampa99.rpgfy.gear.effect.registry.EffectManager
+import git.juampa99.rpgfy.gear.effect.entity.impl.SlownessEffect
+import git.juampa99.rpgfy.gear.effect.listener.EffectListener
+import git.juampa99.rpgfy.gear.effect.registry.EffectRegistry
 import git.juampa99.rpgfy.healthbar.event.HealthBarListener
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
@@ -23,20 +23,23 @@ class Rpgfy : JavaPlugin() {
 
         plugin = this
 
-        // Register effects this should be done somewhere else
-        EffectManager.register(SlownessEffect)
-
-        // Register event listener
-        server.pluginManager.registerEvents(HealthBarListener(), this)
-        server.pluginManager.registerEvents(EffectListener(), this)
-
-        // Register commands
-        this.getCommand("spawngear")?.setExecutor(SpawnGearCommand())
+        registerEffects()
+        registerEvents()
+        registerCommands()
     }
 
-    override fun onDisable() {
-        logger.info("Disabling Rpgfy...")
-        super.onDisable()
+    private fun registerEffects() {
+        // Register effects this should be done somewhere else
+        EffectRegistry.register(SlownessEffect)
+    }
+
+    private fun registerEvents() {
+        server.pluginManager.registerEvents(HealthBarListener(), this)
+        server.pluginManager.registerEvents(EffectListener(), this)
+    }
+
+    private fun registerCommands() {
+        this.getCommand("spawngear")?.setExecutor(SpawnGearCommand())
     }
 
     /*

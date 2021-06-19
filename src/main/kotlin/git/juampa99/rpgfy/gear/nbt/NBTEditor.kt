@@ -1,7 +1,6 @@
-package git.juampa99.rpgfy.gear.builder.util.nbt
+package git.juampa99.rpgfy.gear.nbt
 
 import net.minecraft.server.v1_16_R3.*
-import org.bukkit.Bukkit.getLogger
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.inventory.ItemStack
 

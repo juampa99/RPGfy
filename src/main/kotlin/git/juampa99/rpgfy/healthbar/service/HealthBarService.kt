@@ -1,6 +1,7 @@
 package git.juampa99.rpgfy.healthbar.service
 
 import git.juampa99.rpgfy.Rpgfy
+import git.juampa99.rpgfy.gear.effect.entity.Effect
 import git.juampa99.rpgfy.utils.string.Color
 import git.juampa99.rpgfy.utils.string.ColorCodes
 import git.juampa99.rpgfy.utils.string.ColorCodes.getColorConstant
@@ -9,13 +10,16 @@ import org.bukkit.Bukkit
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.*
+import java.util.*
 import kotlin.math.floor
 
-object HealthBarUtils {
+object HealthBarService {
 
     private val plugin = Rpgfy.plugin
 
     private val separator = plugin?.config?.get("separator").toString()
+
+    private val entityEffects: MutableMap<UUID, MutableSet<Effect>> = mutableMapOf()
 
     /**
      * Extract name from an Entity displayName
@@ -28,15 +32,39 @@ object HealthBarUtils {
     }
 
     /**
+     * Takes a set of effects and returns a colored string representation
+     * TODO: Add color and delimiter to plugin config
+     * @param color of the effect string
+     * @param effects Set of effects
+     * @param delimiter string to separate effects with
+     * @return string representation of the effect set
+     * */
+    private fun generateEffectsString(effects: Set<Effect>,
+                                      color: Color, delimiter: String = "/"): String {
+        if(effects.isEmpty()) return ""
+        // Takes raw effect names and transforms them from EFFECT_NAME to Effect Name
+        val effectString = " " + effects.joinToString(delimiter) { effect ->
+            effect.name.split("_").joinToString(" ") {
+                it.toLowerCase().capitalize()
+            }
+        }
+
+        return color + effectString + FormatCodes.RESET
+    }
+
+    /**
      * Generates healthbar string
      * @param currentHealth Number on the left side of the slash
      * @param maxHealth Number on the right side of the slash
      * @return red string of the form [currentHealth/maxHealth]
      * */
     private fun generateHealthBar(currentHealth: Double,
-                                  potionEffects: List<String>, maxHealth: Double, color: Color): String {
-        return (color + "[${floor(currentHealth)}/${maxHealth}] " +
-        ColorCodes.DARK_BLUE + potionEffects.joinToString("/"))
+                                  maxHealth: Double, color: Color): String {
+        return color + "[${floor(currentHealth).toInt()}/${maxHealth.toInt()}]" + FormatCodes.RESET
+    }
+
+    private fun generateEntityName(entityName: String, color: Color): String {
+        return "$color$separator$entityName" + FormatCodes.RESET
     }
 
     /**
@@ -45,30 +73,20 @@ object HealthBarUtils {
      * @return String including entity name and current health [currentHealth/maxHealth] - EntityName
      */
     private fun generateTag(entity: LivingEntity): String {
-        val maxHealth: Double? = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value
+        val maxHealth: Double = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: return ""
         val currentHealth: Double = entity.health
         val entityName: String = extractName(entity.name)
+        val effects = entityEffects[entity.uniqueId] ?: mutableSetOf()
         // This could crash if configs are missing
         val hbColor: Color = when(entity) {
             is Monster -> plugin?.config?.get("monster-healthbar-color").toString()
             is Player -> plugin?.config?.get("player-healthbar-color").toString()
             else -> plugin?.config?.get("animal-healthbar-color").toString()
         }
-        val potionEffects = entity.activePotionEffects
-        // This maps strings of the form EXAMPLE_STRING to "Example String"
-        val potionEffectNames = potionEffects.map { effect ->
-            effect.type.name.split("_").joinToString(" ") {
-                it.toLowerCase().capitalize()
-            }
-        }
 
-        if(maxHealth == null) {
-            getLogger().warning("null attribute for entity " + entity.name + " / " + entity.uniqueId)
-            return ""
-        }
-
-        return generateHealthBar(currentHealth, potionEffectNames, maxHealth, getColorConstant(hbColor)) +
-                "${FormatCodes.RESET}$separator$entityName"
+        return generateHealthBar(currentHealth, maxHealth, getColorConstant(hbColor)) +
+                generateEffectsString(effects, getColorConstant("DARK_BLUE")) +
+                 generateEntityName(entityName, ColorCodes.WHITE)
     }
 
     /**
@@ -83,6 +101,17 @@ object HealthBarUtils {
                 entity.isCustomNameVisible = true
             entity.customName = generateTag(entity)
         }, 1)
+    }
+
+    fun addEffectToEntity(entity: Entity, effect: Effect) {
+        val effectList = entityEffects[entity.uniqueId] ?: mutableSetOf()
+        effectList.add(effect)
+        entityEffects[entity.uniqueId] = effectList
+    }
+
+    fun removeEffectOfEntity(entity: Entity, effect: Effect) {
+        val entityList = entityEffects[entity.uniqueId] ?: return
+        entityList.remove(effect)
     }
 
 }

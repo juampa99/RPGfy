@@ -6,6 +6,8 @@ interface Effect {
 
     val name: String
 
-    abstract fun trigger(triggeredBy: LivingEntity, target: LivingEntity, level: Int): Unit
+    fun trigger(triggeredBy: LivingEntity, target: LivingEntity, level: Int): Unit
+
+    fun getDuration(level: Int): Int
 
 }

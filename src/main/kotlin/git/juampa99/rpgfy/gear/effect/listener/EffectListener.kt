@@ -1,15 +1,12 @@
-package git.juampa99.rpgfy.gear.effect.event
+package git.juampa99.rpgfy.gear.effect.listener
 
-import git.juampa99.rpgfy.gear.builder.util.nbt.NBTEditor
-import git.juampa99.rpgfy.gear.effect.registry.EffectManager
-import org.bukkit.Bukkit.getLogger
+import git.juampa99.rpgfy.gear.effect.service.EffectService
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 
@@ -33,8 +30,8 @@ class EffectListener : Listener {
         val damaged = event.entity
         if(damager is Player && damaged is LivingEntity) {
             val itemInHand = damager.inventory.getItem(EquipmentSlot.HAND)
-            if(EffectManager.hasEffects(itemInHand))
-                EffectManager.triggerEffects(itemInHand, damager, damaged)
+            if(EffectService.hasEffects(itemInHand))
+                EffectService.triggerEffects(itemInHand, damager, damaged)
         }
     }
 

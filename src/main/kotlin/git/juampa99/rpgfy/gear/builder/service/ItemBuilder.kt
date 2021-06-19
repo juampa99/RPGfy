@@ -1,7 +1,7 @@
 package git.juampa99.rpgfy.gear.builder.service
 
 import git.juampa99.rpgfy.gear.effect.entity.WeaponEffectEnum
-import git.juampa99.rpgfy.gear.effect.service.GearEffectService
+import git.juampa99.rpgfy.gear.effect.service.EffectService
 import git.juampa99.rpgfy.gear.builder.entity.GearPrototype
 import git.juampa99.rpgfy.gear.builder.entity.armor.ArmorPiece
 import git.juampa99.rpgfy.gear.builder.entity.weapon.Weapon
@@ -57,7 +57,7 @@ object ItemBuilder {
         addAttribute(item, weapon.attackSpeed, AttributeStrings.Item.ATTACK_SPEED, weapon.slot)
         addAttribute(item, weapon.damage, AttributeStrings.Item.ATTACK_DAMAGE, weapon.slot)
 
-        return GearEffectService.addEffects(item, mapOf(WeaponEffectEnum.SLOWNESS to 1))
+        return item
     }
 
     private fun createArmorPiece(armorPiece: ArmorPiece): ItemStack {
@@ -71,6 +71,7 @@ object ItemBuilder {
 
     /**
      * Generates ItemStack based on the config specified in item
+     * TODO: Add an addEffect method
      * @param gear item config
      * @throws InvalidItemException
      * @return generated item
