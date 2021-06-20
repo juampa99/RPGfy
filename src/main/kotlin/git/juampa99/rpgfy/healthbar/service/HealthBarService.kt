@@ -17,7 +17,15 @@ object HealthBarService {
 
     private val plugin = Rpgfy.plugin
 
-    private val separator = plugin?.config?.get("separator").toString()
+    // Colors default to WHITE if config cant be retrieved
+    private val separator: String =
+        (plugin?.config?.get("separator") ?: ColorCodes.WHITE) as String
+    private val monsterHbColor: String =
+        (plugin?.config?.get("monster-healthbar-color") ?: ColorCodes.WHITE) as String
+    private val playerHbColor: String =
+        (plugin?.config?.get("player-healthbar-color") ?: ColorCodes.WHITE) as String
+    private val passiveMobHbColor: String =
+        (plugin?.config?.get("animal-healthbar-color") ?: ColorCodes.WHITE) as String
 
     private val entityEffects: MutableMap<UUID, MutableSet<Effect>> = mutableMapOf()
 
@@ -63,7 +71,7 @@ object HealthBarService {
         return color + "[${floor(currentHealth).toInt()}/${maxHealth.toInt()}]" + FormatCodes.RESET
     }
 
-    private fun generateEntityName(entityName: String, color: Color): String {
+    private fun generateEntityName(entityName: String, separator: String, color: Color): String {
         return "$color$separator$entityName" + FormatCodes.RESET
     }
 
@@ -79,18 +87,18 @@ object HealthBarService {
         val effects = entityEffects[entity.uniqueId] ?: mutableSetOf()
         // This could crash if configs are missing
         val hbColor: Color = when(entity) {
-            is Monster -> plugin?.config?.get("monster-healthbar-color").toString()
-            is Player -> plugin?.config?.get("player-healthbar-color").toString()
-            else -> plugin?.config?.get("animal-healthbar-color").toString()
+            is Monster -> monsterHbColor
+            is Player -> playerHbColor
+            else -> passiveMobHbColor
         }
 
         return generateHealthBar(currentHealth, maxHealth, getColorConstant(hbColor)) +
                 generateEffectsString(effects, getColorConstant("DARK_BLUE")) +
-                 generateEntityName(entityName, ColorCodes.WHITE)
+                 generateEntityName(entityName, separator, ColorCodes.WHITE)
     }
 
     /**
-     * Updates health bar for entity
+     * Updates health bar for entity, effects must be added separately
      * @param entity Entity to update health bar of
      * */
     fun updateHealthBar(entity: Entity) {
@@ -103,12 +111,25 @@ object HealthBarService {
         }, 1)
     }
 
+    /**
+     * Adds effect to an entity. This will be displayed in the healthbar
+     * if its still active when updated. Doesnt update automatically
+     * updateHealthbar must be called
+     * @param entity to add effect to
+     * @param effect to add to  the entity
+     * */
     fun addEffectToEntity(entity: Entity, effect: Effect) {
         val effectList = entityEffects[entity.uniqueId] ?: mutableSetOf()
         effectList.add(effect)
         entityEffects[entity.uniqueId] = effectList
     }
 
+    /**
+     * Removes effect from an entity. Doesnt update
+     * automatically updateHealthbar must be called
+     * @param entity to add effect to
+     * @param effect to add to  the entity
+     * */
     fun removeEffectOfEntity(entity: Entity, effect: Effect) {
         val entityList = entityEffects[entity.uniqueId] ?: return
         entityList.remove(effect)
