@@ -1,8 +1,11 @@
 package git.juampa99.rpgfy.gear.builder.entity.weapon
 
 import git.juampa99.rpgfy.gear.builder.util.constants.ItemType
+import git.juampa99.rpgfy.gear.effect.entity.WeaponEffect
 import org.bukkit.inventory.EquipmentSlot
 
 class Sword(name: String, damage: Double = 1.0,
-            attackSpeed: Double = 1.6, lore: List<String> = emptyList())
-    : Weapon(name, damage, attackSpeed, lore, ItemType.SWORD , EquipmentSlot.HAND)
+            attackSpeed: Double = 1.6, lore: List<String> = emptyList(),
+            effects: Map<WeaponEffect, Int> = mapOf())
+    : Weapon(name, damage, attackSpeed, lore,
+            ItemType.SWORD, EquipmentSlot.HAND, effects)

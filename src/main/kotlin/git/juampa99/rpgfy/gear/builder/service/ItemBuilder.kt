@@ -6,6 +6,12 @@ import git.juampa99.rpgfy.gear.builder.entity.GearPrototype
 import git.juampa99.rpgfy.gear.builder.entity.armor.ArmorPiece
 import git.juampa99.rpgfy.gear.builder.entity.weapon.Weapon
 import git.juampa99.rpgfy.gear.builder.util.constants.AttributeStrings
+import git.juampa99.rpgfy.gear.effect.entity.ArmorEffect
+import git.juampa99.rpgfy.gear.effect.entity.Effect
+import git.juampa99.rpgfy.gear.effect.entity.WeaponEffect
+import git.juampa99.rpgfy.gear.nbt.NBTEditor
+import git.juampa99.rpgfy.utils.string.ColorCodes
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -19,20 +25,24 @@ object ItemBuilder {
 
     class InvalidItemException(message: String) : Exception(message)
 
-    private fun addAttribute(item: ItemStack, amount: Double, attribute: String, slot: EquipmentSlot): Unit {
+    private fun addAttribute(item: ItemStack, amount: Double,
+                             attribute: String, attributeEnum: Attribute,
+                             slot: EquipmentSlot): Unit {
         val itemMeta: ItemMeta = item.itemMeta ?: return
 
-        val attMod =
+        val mod =
             AttributeModifier(UUID.randomUUID(), attribute,
                 amount, AttributeModifier.Operation.ADD_NUMBER, slot)
 
-        itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, attMod)
+        itemMeta.addAttributeModifier(attributeEnum, mod)
         item.itemMeta = itemMeta
     }
 
     private fun addLore(item: ItemStack, lore: List<String>) {
         val itemMeta: ItemMeta = item.itemMeta ?: return
-        itemMeta.lore?.plusAssign(lore)
+        val oldLore = itemMeta.lore ?: emptyList()
+        itemMeta.lore = listOf(lore.toMutableList(), oldLore).flatten()
+
         item.itemMeta = itemMeta
     }
 
@@ -51,27 +61,44 @@ object ItemBuilder {
         return item
     }
 
+    private fun addEffects(item: ItemStack, effects: Map<String, Int>): ItemStack {
+        return EffectService.addEffects(item, effects)
+    }
+
     private fun createWeapon(weapon: Weapon): ItemStack {
         val item: ItemStack = createItem(weapon.name, weapon.lore, weapon.type)
 
-        addAttribute(item, weapon.attackSpeed, AttributeStrings.Item.ATTACK_SPEED, weapon.slot)
-        addAttribute(item, weapon.damage, AttributeStrings.Item.ATTACK_DAMAGE, weapon.slot)
+        addAttribute(item, weapon.attackSpeed, AttributeStrings.Item.ATTACK_SPEED,
+            Attribute.GENERIC_ATTACK_SPEED, weapon.slot)
+        addAttribute(item, weapon.damage, AttributeStrings.Item.ATTACK_DAMAGE,
+            Attribute.GENERIC_ATTACK_DAMAGE, weapon.slot)
 
-        return item
+        // Adds effects to the items lore, as "Effect Name LEVEL"
+        addLore(item, weapon.effects.toList().map{ el ->
+            ColorCodes.GREEN + el.first.lowercase().capitalize() + " " + el.second
+        })
+
+        return addEffects(item, weapon.effects)
     }
 
     private fun createArmorPiece(armorPiece: ArmorPiece): ItemStack {
         val item: ItemStack = createItem(armorPiece.name, armorPiece.lore, armorPiece.type)
 
-        addAttribute(item, armorPiece.armor, AttributeStrings.Item.ARMOR, armorPiece.slot)
-        addAttribute(item, armorPiece.armorToughness, AttributeStrings.Item.ARMOR, armorPiece.slot)
+        addAttribute(item, armorPiece.armor, AttributeStrings.Item.ARMOR,
+            Attribute.GENERIC_ARMOR, armorPiece.slot)
+        addAttribute(item, armorPiece.armorToughness, AttributeStrings.Item.ARMOR_THOUGHNESS,
+            Attribute.GENERIC_ARMOR_TOUGHNESS, armorPiece.slot)
 
-        return item
+        // Adds effects to the items lore, as "Effect Name LEVEL"
+        addLore(item, armorPiece.effects.toList().map{ el ->
+            ColorCodes.GREEN + el.first.lowercase().capitalize() + " " + el.second
+        })
+
+        return addEffects(item, armorPiece.effects)
     }
 
     /**
      * Generates ItemStack based on the config specified in item
-     * TODO: Add an addEffect method
      * @param gear item config
      * @throws InvalidItemException
      * @return generated item

@@ -8,7 +8,7 @@ commands:
   spawngear:
     description: Gives a custom weapon or armor to the caller
     usage: >
-          /spawngear armor <type> <name> <armor?> <armor_toughness?>
-          /spawngear weapon <type> <name> <damage?> <attack_speed?>
+          /spawngear armor <type> <name> <armor?> <armor_toughness?> <effect1?> <value1?> ... <effectN?> <valueN?>
+          /spawngear weapon <type> <name> <damage?> <attack_speed?> <effect1?> <value1?> ... <effectN?> <valueN?>
           (Parameters marked with "?" are optional)
     permission: rpgfy.spawngear

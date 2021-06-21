@@ -1,3 +1,3 @@
 package git.juampa99.rpgfy.gear.effect.entity
 
-interface ArmorEffect: Effect
+abstract class ArmorEffect(effectName: String) : Effect(effectName)

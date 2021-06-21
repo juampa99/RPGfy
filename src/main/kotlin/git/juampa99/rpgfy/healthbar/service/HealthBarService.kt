@@ -16,6 +16,7 @@ import kotlin.math.floor
 object HealthBarService {
 
     private val plugin = Rpgfy.plugin
+    private val entityEffects: MutableMap<UUID, MutableMap<String, Int>> = mutableMapOf()
 
     // Colors default to WHITE if config cant be retrieved
     private val separator: String =
@@ -27,7 +28,7 @@ object HealthBarService {
     private val passiveMobHbColor: String =
         (plugin?.config?.get("animal-healthbar-color") ?: ColorCodes.WHITE) as String
 
-    private val entityEffects: MutableMap<UUID, MutableSet<Effect>> = mutableMapOf()
+
 
     /**
      * Extract name from an Entity displayName
@@ -47,12 +48,12 @@ object HealthBarService {
      * @param delimiter string to separate effects with
      * @return string representation of the effect set
      * */
-    private fun generateEffectsString(effects: Set<Effect>,
+    private fun generateEffectsString(effects: Map<String, Int>,
                                       color: Color, delimiter: String = "/"): String {
         if(effects.isEmpty()) return ""
         // Takes raw effect names and transforms them from EFFECT_NAME to Effect Name
-        val effectString = " " + effects.joinToString(delimiter) { effect ->
-            effect.name.split("_").joinToString(" ") {
+        val effectString = " " + effects.toList().joinToString { effect ->
+            effect.first.split("_").joinToString(" ") {
                 it.toLowerCase().capitalize()
             }
         }
@@ -84,7 +85,7 @@ object HealthBarService {
         val maxHealth: Double = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: return ""
         val currentHealth: Double = entity.health
         val entityName: String = extractName(entity.name)
-        val effects = entityEffects[entity.uniqueId] ?: mutableSetOf()
+        val effects = entityEffects[entity.uniqueId] ?: mutableMapOf()
         // This could crash if configs are missing
         val hbColor: Color = when(entity) {
             is Monster -> monsterHbColor
@@ -119,9 +120,12 @@ object HealthBarService {
      * @param effect to add to  the entity
      * */
     fun addEffectToEntity(entity: Entity, effect: Effect) {
-        val effectList = entityEffects[entity.uniqueId] ?: mutableSetOf()
-        effectList.add(effect)
-        entityEffects[entity.uniqueId] = effectList
+        val effectMap: MutableMap<String, Int> = entityEffects[entity.uniqueId] ?: mutableMapOf()
+        // If the effect is already active in the entity,
+        // add one to the integer in the tuple, else create a new pair
+        effectMap[effect.name] = (effectMap[effect.name] ?: 0) + 1
+
+        entityEffects[entity.uniqueId] = effectMap
     }
 
     /**
@@ -131,8 +135,17 @@ object HealthBarService {
      * @param effect to add to  the entity
      * */
     fun removeEffectOfEntity(entity: Entity, effect: Effect) {
-        val entityList = entityEffects[entity.uniqueId] ?: return
-        entityList.remove(effect)
+        val effectMap = entityEffects[entity.uniqueId] ?: return
+        var effectEntry = effectMap[effect.name]
+
+        if(effectEntry != null) {
+            if(effectEntry > 1 ) {
+                effectEntry -= 1
+                effectMap[effect.name] = effectEntry
+            }
+            else effectMap.remove(effect.name)
+        }
+
     }
 
 }

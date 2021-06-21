@@ -2,12 +2,10 @@ package git.juampa99.rpgfy.gear.effect.entity
 
 import org.bukkit.entity.LivingEntity
 
-interface Effect {
+abstract class Effect(val name: String) {
 
-    val name: String
+    abstract fun trigger(triggeredBy: LivingEntity, target: LivingEntity, level: Int): Unit
 
-    fun trigger(triggeredBy: LivingEntity, target: LivingEntity, level: Int): Unit
-
-    fun getDuration(level: Int): Int
+    abstract fun getDuration(level: Int): Int
 
 }

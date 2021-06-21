@@ -1,8 +1,8 @@
 package git.juampa99.rpgfy.gear.effect.service
 
 import git.juampa99.rpgfy.Rpgfy
-import git.juampa99.rpgfy.gear.effect.entity.ArmorEffectEnum
-import git.juampa99.rpgfy.gear.effect.entity.WeaponEffectEnum
+import git.juampa99.rpgfy.gear.effect.entity.*
+import git.juampa99.rpgfy.gear.effect.entity.impl.SlownessEffect
 import git.juampa99.rpgfy.gear.effect.event.EffectFadeEvent
 import git.juampa99.rpgfy.gear.effect.event.EffectTriggerEvent
 import git.juampa99.rpgfy.gear.nbt.NBTEditor
@@ -15,21 +15,17 @@ import org.bukkit.inventory.ItemStack
 object EffectService {
 
     /**
-     * Creates a stack with the specified effects. DOESNT MODIFY THE itemStack, RETURNS A NEW INSTANCE
+     * @return True if itemStack has any effect
      * */
-    @JvmName("addEffectsWeapon")
-    fun addEffects(itemStack: ItemStack, effects: Map<WeaponEffectEnum, Int>): ItemStack {
-        val parsedMap = effects.mapKeys { k -> k.key.name  }
-        return NBTEditor.createStackWithTags(itemStack, "effects", parsedMap)
+    fun hasEffects(itemStack: ItemStack): Boolean {
+        return NBTEditor.hasKey(itemStack, "effects")
     }
 
     /**
      * Creates a stack with the specified effects. DOESNT MODIFY THE itemStack, RETURNS A NEW INSTANCE
      * */
-    @JvmName("addEffectsArmor")
-    fun addEffects(itemStack: ItemStack, effects: Map<ArmorEffectEnum, Int>): ItemStack {
-        val parsedMap = effects.mapKeys { k -> k.key.name }
-        return NBTEditor.createStackWithTags(itemStack, "effects", parsedMap)
+    fun addEffects(itemStack: ItemStack, effects: Map<String, Int>): ItemStack {
+        return NBTEditor.createStackWithTags(itemStack, "effects", effects)
     }
 
     /**
@@ -45,7 +41,7 @@ object EffectService {
 
         // Trigger each effect if its registered
         parsedEffects.forEach { effect ->
-            // If effects doesnt exist, skip this entry
+            // If effect doesnt exist, skip this entry
             val effectInstance = EffectRegistry.getEffect(effect.key) ?: return@forEach
             val effectDuration = effectInstance.getDuration(effect.value)
 
@@ -61,11 +57,5 @@ object EffectService {
         }
     }
 
-    /**
-     * @return True if itemStack has any effect
-     * */
-    fun hasEffects(itemStack: ItemStack): Boolean {
-        return NBTEditor.hasKey(itemStack, "effects")
-    }
 
 }

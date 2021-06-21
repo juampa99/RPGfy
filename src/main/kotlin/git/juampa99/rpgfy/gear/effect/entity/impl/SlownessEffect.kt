@@ -13,7 +13,7 @@ object SlownessEffect : WeaponEffect(WeaponEffectEnum.SLOWNESS.name) {
 
     override fun trigger(triggeredBy: LivingEntity, target: LivingEntity, level: Int) {
         // Values may need some tweaking
-        target.addPotionEffect(PotionEffect(PotionEffectType.SLOW, getDuration(level), level * 2))
+        target.addPotionEffect(PotionEffect(PotionEffectType.SLOW, getDuration(level), level))
     }
 
     override fun getDuration(level: Int) : Int {

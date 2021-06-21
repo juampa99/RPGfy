@@ -5,6 +5,10 @@ import git.juampa99.rpgfy.gear.builder.entity.armor.*
 import git.juampa99.rpgfy.gear.builder.service.ItemBuilder
 import git.juampa99.rpgfy.gear.builder.entity.weapon.Sword
 import git.juampa99.rpgfy.gear.builder.entity.weapon.Weapon
+import git.juampa99.rpgfy.gear.effect.entity.ArmorEffect
+import git.juampa99.rpgfy.gear.effect.entity.Effect
+import git.juampa99.rpgfy.gear.effect.entity.WeaponEffect
+import git.juampa99.rpgfy.gear.effect.entity.impl.SlownessEffect
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -13,7 +17,20 @@ import org.bukkit.entity.Player
 
 class SpawnGearCommand : CommandExecutor {
 
-    private fun createWeapon(args: Array<out String>): GearPrototype {
+    private fun getWeaponEffect(effectName: String): WeaponEffect {
+        when(effectName) {
+            SlownessEffect.name -> return SlownessEffect
+            else -> throw RuntimeException("No effect named $effectName exists")
+        }
+    }
+
+    private fun getArmorEffect(effectName: String): ArmorEffect {
+        when(effectName) {
+            else -> throw RuntimeException("No effect named $effectName exists")
+        }
+    }
+
+    private fun createWeapon(args: Array<out String>): Weapon {
         val itemName: String = args[2]
 
         val weapon: Weapon = when(args[1].lowercase()) {
@@ -23,11 +40,22 @@ class SpawnGearCommand : CommandExecutor {
 
         if(args.size >= 4) weapon.damage = args[3].toDouble()
         if(args.size >= 5) weapon.attackSpeed = args[4].toDouble()
+        if(args.size >= 7) {
+            val effects = mutableMapOf<WeaponEffect, Int>()
+            var i = 5
+
+            while(i < args.size) {
+                effects[getWeaponEffect(args[i])] = args[i+1].toInt()
+                i += 2
+            }
+
+            weapon.effects = effects.mapKeys { e -> e.key.name }
+        }
 
         return weapon
     }
 
-    private fun createArmor(args: Array<out String>): GearPrototype {
+    private fun createArmor(args: Array<out String>): ArmorPiece {
         val itemName: String = args[2]
 
         val armor: ArmorPiece = when(args[1].lowercase()) {
@@ -40,33 +68,52 @@ class SpawnGearCommand : CommandExecutor {
 
         if(args.size >= 4) armor.armor = args[3].toDouble()
         if(args.size >= 5) armor.armorToughness = args[4].toDouble()
+        if(args.size >= 7) {
+            val effects = mutableMapOf<ArmorEffect, Int>()
+            var i = 5
+
+            while(i < args.size) {
+                effects[getArmorEffect(args[i])] = args[i+1].toInt()
+                i += 2
+            }
+
+            armor.effects = effects.mapKeys { e -> e.key.name }
+        }
 
         return armor
     }
 
     /**
-     * armor <type> <name> <armor?> <armor_toughness?>
-     * weapon <type> <name> <damage?> <attack_speed?
+     * armor <type> <name> <armor?> <armor_toughness?> <effect1?> <value1?> ... <effectN?> <valueN?>
+     * weapon <type> <name> <damage?> <attack_speed? <effect1?> <value1?> ... <effectN?> <valueN?>
      * */
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(sender !is Player) return false
         if(args.size < 2) return false
-        getLogger().info(args[0])
+        if(args[0].lowercase() == "test") {
+            val testSword = Sword(
+                "Test Sword",
+                0.1, 0.5, effects = mapOf(SlownessEffect to 3)
+            )
 
-        val gearPrototype: GearPrototype
+            sender.inventory.addItem(ItemBuilder.createItem(testSword))
+
+            return true
+        }
 
         try {
-            gearPrototype = when((args[0]).lowercase()) {
+            val gearPiece = when((args[0]).lowercase()) {
                 "armor" -> createArmor(args)
                 "weapon" -> createWeapon(args)
                 else -> return false
             }
+
+            sender.inventory.addItem(ItemBuilder.createItem(gearPiece))
         }
         catch(e: Exception) {
+            getLogger().warning(e.toString())
             return false
         }
-
-        sender.inventory.addItem(ItemBuilder.createItem(gearPrototype))
 
         return true
     }
