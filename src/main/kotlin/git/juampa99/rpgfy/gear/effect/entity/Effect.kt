@@ -8,4 +8,8 @@ abstract class Effect(val name: String) {
 
     abstract fun getDuration(level: Int): Int
 
+    abstract fun isDebuff(): Boolean
+
+    abstract fun getCooldown(level: Int): Int
+
 }

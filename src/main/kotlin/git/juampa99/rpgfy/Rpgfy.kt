@@ -1,10 +1,10 @@
 package git.juampa99.rpgfy
 
 import git.juampa99.rpgfy.command.gear.SpawnGearCommand
-import git.juampa99.rpgfy.gear.effect.entity.impl.SlownessEffect
+import git.juampa99.rpgfy.gear.effect.entity.impl.weapon.SlownessEffect
 import git.juampa99.rpgfy.gear.effect.listener.EffectListener
 import git.juampa99.rpgfy.gear.effect.registry.EffectRegistry
-import git.juampa99.rpgfy.healthbar.event.HealthBarListener
+import git.juampa99.rpgfy.healthbar.listener.HealthBarListener
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.plugin.java.JavaPlugin

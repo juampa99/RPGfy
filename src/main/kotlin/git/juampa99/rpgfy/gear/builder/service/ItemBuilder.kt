@@ -1,17 +1,12 @@
 package git.juampa99.rpgfy.gear.builder.service
 
-import git.juampa99.rpgfy.gear.effect.entity.WeaponEffectEnum
 import git.juampa99.rpgfy.gear.effect.service.EffectService
 import git.juampa99.rpgfy.gear.builder.entity.GearPrototype
 import git.juampa99.rpgfy.gear.builder.entity.armor.ArmorPiece
 import git.juampa99.rpgfy.gear.builder.entity.weapon.Weapon
 import git.juampa99.rpgfy.gear.builder.util.constants.AttributeStrings
-import git.juampa99.rpgfy.gear.effect.entity.ArmorEffect
 import git.juampa99.rpgfy.gear.effect.entity.Effect
-import git.juampa99.rpgfy.gear.effect.entity.WeaponEffect
-import git.juampa99.rpgfy.gear.nbt.NBTEditor
 import git.juampa99.rpgfy.utils.string.ColorCodes
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -61,7 +56,8 @@ object ItemBuilder {
         return item
     }
 
-    private fun addEffects(item: ItemStack, effects: List<Pair<Effect, Int>>): ItemStack {
+    private fun addEffects(item: ItemStack,
+                           effects: List<Pair<Effect, Int>>): ItemStack {
         return EffectService.addEffects(item, effects)
     }
 
