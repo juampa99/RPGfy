@@ -24,8 +24,9 @@ object EffectService {
     /**
      * Creates a stack with the specified effects. DOESNT MODIFY THE itemStack, RETURNS A NEW INSTANCE
      * */
-    fun addEffects(itemStack: ItemStack, effects: Map<String, Int>): ItemStack {
-        return NBTEditor.createStackWithTags(itemStack, "effects", effects)
+    fun addEffects(itemStack: ItemStack, effects: List<Pair<Effect, Int>>): ItemStack {
+        return NBTEditor.createStackWithTags(itemStack,
+            "effects", effects.map { p -> Pair(p.first.name, p.second) })
     }
 
     /**

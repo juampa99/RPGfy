@@ -41,15 +41,15 @@ class SpawnGearCommand : CommandExecutor {
         if(args.size >= 4) weapon.damage = args[3].toDouble()
         if(args.size >= 5) weapon.attackSpeed = args[4].toDouble()
         if(args.size >= 7) {
-            val effects = mutableMapOf<WeaponEffect, Int>()
+            val effects: MutableList<Pair<WeaponEffect, Int>> = mutableListOf()
             var i = 5
 
             while(i < args.size) {
-                effects[getWeaponEffect(args[i])] = args[i+1].toInt()
+                effects.add(Pair(getWeaponEffect(args[i]), args[i+1].toInt()))
                 i += 2
             }
 
-            weapon.effects = effects.mapKeys { e -> e.key.name }
+            weapon.effects = effects
         }
 
         return weapon
@@ -69,15 +69,15 @@ class SpawnGearCommand : CommandExecutor {
         if(args.size >= 4) armor.armor = args[3].toDouble()
         if(args.size >= 5) armor.armorToughness = args[4].toDouble()
         if(args.size >= 7) {
-            val effects = mutableMapOf<ArmorEffect, Int>()
+            val effects: MutableList<Pair<ArmorEffect, Int>> = mutableListOf()
             var i = 5
 
             while(i < args.size) {
-                effects[getArmorEffect(args[i])] = args[i+1].toInt()
+                effects.add(Pair(getArmorEffect(args[i]), args[i+1].toInt()))
                 i += 2
             }
 
-            armor.effects = effects.mapKeys { e -> e.key.name }
+            armor.effects = effects
         }
 
         return armor
@@ -93,7 +93,7 @@ class SpawnGearCommand : CommandExecutor {
         if(args[0].lowercase() == "test") {
             val testSword = Sword(
                 "Test Sword",
-                0.1, 0.5, effects = mapOf(SlownessEffect to 3)
+                0.1, 0.5, effects = listOf(Pair(SlownessEffect, 3))
             )
 
             sender.inventory.addItem(ItemBuilder.createItem(testSword))

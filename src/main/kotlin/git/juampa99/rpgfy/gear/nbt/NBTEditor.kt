@@ -89,7 +89,8 @@ object NBTEditor {
      * Creates a stack using the parameters. DOESNT MODIFY THE itemStack PARAMETER IT RETURNS A NEW INSTANCE
      * */
     @JvmName("addTagToStackString")
-    fun createStackWithTags(itemStack: ItemStack, tagName: String, tags: Map<String, String>): ItemStack {
+    fun createStackWithTags(itemStack: ItemStack, tagName: String,
+                            tags: List<Pair<String, String>>): ItemStack {
         val newComp = NBTTagCompound()
 
         // This "a" method creates a new instance of a NBTTagString
@@ -102,7 +103,8 @@ object NBTEditor {
      * Creates a stack using the parameters. DOESNT MODIFY THE itemStack PARAMETER, RETURNS A NEW INSTANCE
      * */
     @JvmName("addTagToStackInt")
-    fun createStackWithTags(itemStack: ItemStack, tagName: String, tags: Map<String, Int>): ItemStack {
+    fun createStackWithTags(itemStack: ItemStack, tagName: String,
+                            tags: List<Pair<String, Int>>): ItemStack {
         val newComp = NBTTagCompound()
 
         // This "a" method creates a new instance of a NBTTagString
@@ -115,7 +117,8 @@ object NBTEditor {
      * Creates a stack using the parameters. DOESNT MODIFY THE itemStack PARAMETER, RETURNS A NEW INSTANCE
      * */
     @JvmName("addTagToStackIntArray")
-    fun createStackWithTags(itemStack: ItemStack, tagName: String, tags: Map<String, IntArray>): ItemStack {
+    fun createStackWithTags(itemStack: ItemStack, tagName: String,
+                            tags: List<Pair<String, IntArray>>): ItemStack {
         val newComp = NBTTagCompound()
 
         tags.forEach { (k, v) -> newComp.set(k, NBTTagIntArray(v)) }

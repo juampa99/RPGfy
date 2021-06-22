@@ -1,12 +1,11 @@
 package git.juampa99.rpgfy.gear.builder.entity
 
+import git.juampa99.rpgfy.gear.effect.entity.Effect
 import org.bukkit.Material
 import org.bukkit.inventory.EquipmentSlot
 
 abstract class GearPrototype(
     var name: String, var lore: List<String>,
     val type: Material, val slot: EquipmentSlot,
-    // Effects may be better represented as List<Pair<Effect, Int>>
-    // so it will be polymorphic and will make more sense
-    var effects: Map<String, Int>
+    var effects: List<Pair<Effect, Int>>
 )

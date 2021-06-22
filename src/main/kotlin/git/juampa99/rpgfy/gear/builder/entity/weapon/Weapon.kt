@@ -9,5 +9,5 @@ import org.bukkit.inventory.EquipmentSlot
 abstract class Weapon(name: String, var damage: Double,
                       var attackSpeed: Double, lore: List<String> = listOf(),
                       type: Material, slot: EquipmentSlot,
-                      effects: Map<WeaponEffect, Int> = emptyMap())
-    : GearPrototype(name, lore, type, slot, effects.mapKeys { e -> e.key.name })
+                      effects: List<Pair<WeaponEffect, Int>> = emptyList())
+    : GearPrototype(name, lore, type, slot, effects)
