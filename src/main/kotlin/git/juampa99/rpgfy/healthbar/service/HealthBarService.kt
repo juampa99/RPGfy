@@ -106,7 +106,8 @@ object HealthBarService {
         // Only usable for animals, mobs and player
         if(plugin == null || entity !is Creature) return
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, {
-            if(plugin.config.getBoolean("show-pasive-animals-healthbar") || entity is Monster || entity is Player)
+            if(plugin.config.getBoolean("show-pasive-animals-healthbar")
+                || entity is Monster || entity is Player)
                 entity.isCustomNameVisible = true
             entity.customName = generateTag(entity)
         }, 1)

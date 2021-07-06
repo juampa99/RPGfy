@@ -1,0 +1,13 @@
+# You can set custom droptables for mobs in this file
+
+# Example
+
+#zombie:
+#  drop:
+#    item1:
+#      name: DIAMOND_SWORD
+#      dropchance: 0.01
+#    item2:
+#      name: DIAMOND
+#      dropchance: 0.1
+
