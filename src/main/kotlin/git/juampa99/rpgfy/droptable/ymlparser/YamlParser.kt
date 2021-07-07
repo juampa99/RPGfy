@@ -8,6 +8,12 @@ import java.io.File
 
 object YamlParser {
 
+    /**
+     * Parses a Yaml file to a list of YamlEntity
+     * @param filePath path relative to /resources
+     * @param objectPath path of the entity in the yaml file
+     * @param model entity builder, must extend YamlModel
+     * */
     fun parseYmlConfig(filePath: String, objectPath: String, model: YamlModel): List<YamlEntity> {
 
         val file = File(Rpgfy.plugin?.dataFolder, filePath)

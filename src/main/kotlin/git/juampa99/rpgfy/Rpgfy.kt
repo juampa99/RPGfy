@@ -1,12 +1,14 @@
 package git.juampa99.rpgfy
 
 import git.juampa99.rpgfy.command.gear.SpawnGearCommand
+import git.juampa99.rpgfy.droptable.listener.DroptableListener
 import git.juampa99.rpgfy.droptable.service.DroptableService
 import git.juampa99.rpgfy.gear.effect.entity.impl.weapon.SlownessEffect
 import git.juampa99.rpgfy.gear.effect.listener.EffectListener
 import git.juampa99.rpgfy.gear.effect.registry.EffectRegistry
 import git.juampa99.rpgfy.healthbar.listener.HealthBarListener
 import git.juampa99.rpgfy.droptable.ymlparser.YamlParser
+import git.juampa99.rpgfy.droptable.ymlparser.entity.DropTableEntry
 import git.juampa99.rpgfy.droptable.ymlparser.entity.YamlEntity
 import git.juampa99.rpgfy.droptable.ymlparser.model.DroptableEntryBuilder
 import org.bukkit.event.EventHandler
@@ -41,6 +43,7 @@ class Rpgfy : JavaPlugin() {
     private fun registerEvents() {
         server.pluginManager.registerEvents(HealthBarListener(), this)
         server.pluginManager.registerEvents(EffectListener(), this)
+        server.pluginManager.registerEvents(DroptableListener(), this)
     }
 
     private fun registerCommands() {
@@ -50,11 +53,12 @@ class Rpgfy : JavaPlugin() {
     private fun loadDroptable() {
         // This could be done taking entries of the yaml file
         val entities = listOf("zombie", "creeper", "skeleton", "enderman")
-        val droptable = mutableMapOf<String, List<YamlEntity>>()
+        val droptable = mutableMapOf<String, List<DropTableEntry>>()
+
         for(entity in entities) {
             droptable[entity] =
                 YamlParser.parseYmlConfig("droptable.yml",
-                    "$entity.drop", DroptableEntryBuilder)
+                    "$entity.drop", DroptableEntryBuilder).filterIsInstance<DropTableEntry>()
         }
 
         DroptableService.loadDroptable(droptable)

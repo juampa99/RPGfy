@@ -28,6 +28,10 @@ object EffectService {
      * */
     fun addEffects(itemStack: ItemStack,
                    effects: List<Pair<Effect, Int>>): ItemStack {
+        // If item doesnt have effects but the tag is created anyway,
+        // hasEffects() will return true when it should return false
+        if(effects.isEmpty()) return itemStack
+
         return NBTEditor.createStackWithTags(itemStack,
             "effects", effects.map { p -> Pair(p.first.name, p.second) })
     }
@@ -41,30 +45,40 @@ object EffectService {
     fun triggerEffects(item: ItemStack,
                        emisor: LivingEntity, target: LivingEntity) {
         if(!hasEffects(item)) return
-        val effects = NBTEditor.getKeysOnTag(item, "effects")
-        val parsedEffects = effects.mapValues { value -> value.value.toInt() }
 
-        // Trigger each effect if its registered
-        parsedEffects.forEach { effect ->
-            // If effect doesnt exist, skip this entry
-            val effectInstance = EffectRegistry.getEffect(effect.key) ?: return@forEach
-            // If effect is in cooldown, dont trigger it
-            val cooldown = CooldownManager.getCooldown(emisor, effectInstance)
-            if(cooldown > 0) return@forEach
+        try {
+            val effects = NBTEditor.getKeysOnTag(item, "effects")
+            val parsedEffects = effects.mapValues { value -> value.value.toInt() }
 
-            val effectDuration = effectInstance.getDuration(effect.value)
+            // Trigger each effect if its registered
+            parsedEffects.forEach { effect ->
+                // If effect doesnt exist, skip this entry
+                val effectInstance = EffectRegistry.getEffect(effect.key) ?: return@forEach
+                // If effect is in cooldown, dont trigger it
+                val cooldown = CooldownManager.getCooldown(emisor, effectInstance)
+                if(cooldown > 0) return@forEach
 
-            Bukkit.getPluginManager().callEvent(EffectTriggerEvent(target, effectInstance))
-            // Schedule effect fade event to fire when the effect runs out
-            Rpgfy.plugin?.let {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(it, {
-                    Bukkit.getPluginManager().callEvent(EffectFadeEvent(target, effectInstance))
-                }, effectDuration.toLong())
+                val effectDuration = effectInstance.getDuration(effect.value)
+
+                Bukkit.getPluginManager().callEvent(EffectTriggerEvent(target, effectInstance))
+                // Schedule effect fade event to fire when the effect runs out
+                Rpgfy.plugin?.let {
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(it, {
+                        Bukkit.getPluginManager().callEvent(EffectFadeEvent(target, effectInstance))
+                    }, effectDuration.toLong())
+                }
+
+                CooldownManager.setCooldown(emisor, effectInstance, effect.value)
+                effectInstance.trigger(emisor, target, effect.value)
             }
-
-            CooldownManager.setCooldown(emisor, effectInstance, effect.value)
-            effectInstance.trigger(emisor, target, effect.value)
         }
+        catch (e: Exception) {
+            getLogger().warning(e.toString())
+            return
+        }
+
+
+
     }
 
 

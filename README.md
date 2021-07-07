@@ -53,7 +53,12 @@ Supported item traits
     <tr>
         <td>dropchance</td>
         <td>Drop chance of the item specified as percentage, example: 0.01, 1, 10</td>
-        <td>100 - 1.0E-16 (0. followed by 15 zeroes and a 1)</td>
+        <td>1.0E-16 - 100</td>
+    </tr>
+    <tr>
+        <td>quantity</td>
+        <td>Amount of items in the stack</td>
+        <td>1 - 64</td>
     </tr>
 </table>
 

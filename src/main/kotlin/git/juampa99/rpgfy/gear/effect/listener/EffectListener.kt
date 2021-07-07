@@ -1,6 +1,7 @@
 package git.juampa99.rpgfy.gear.effect.listener
 
 import git.juampa99.rpgfy.gear.effect.service.EffectService
+import org.bukkit.Bukkit.getLogger
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -30,6 +31,7 @@ class EffectListener : Listener {
         val damaged = event.entity
         if(damager is Player && damaged is LivingEntity) {
             val itemInHand = damager.inventory.getItem(EquipmentSlot.HAND)
+
             if(EffectService.hasEffects(itemInHand))
                 EffectService.triggerEffects(itemInHand, damager, damaged)
         }

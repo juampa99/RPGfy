@@ -15,11 +15,13 @@ object DroptableEntryBuilder : YamlModel() {
             val entityList = mutableListOf<YamlEntity>()
             val configSectionKeys = configSection.getKeys(false)
 
-            loop@for (key in configSectionKeys) {
-               val name = yamlFile.getString("$path.$key.name") ?: continue@loop
-               val dropChance = yamlFile.getString("$path.$key.dropchance") ?: continue@loop
+            for (key in configSectionKeys) {
+               val name = yamlFile.getString("$path.$key.name") ?: continue
+               val dropChance = yamlFile.getString("$path.$key.dropchance") ?: continue
+               // Quantity defaults to 1 if not specified in the Yaml file
+               val quantity = yamlFile.getInt("$path.$key.quantity", 1)
 
-               entityList.add(DropTableEntry(name, dropChance.toDouble()))
+               entityList.add(DropTableEntry(name, dropChance.toDouble(), quantity))
             }
 
             return entityList

@@ -14,17 +14,22 @@ object DroptableService {
      * @return entity's droptable or empty list if doesnt exist
      * */
     fun getDropsFromEntity(entity: String): List<DropTableEntry> {
-        return innerDroptable[entity] ?: emptyList()
+        val entitySlug = entity.uppercase().replace(" ", "_")
+        return innerDroptable[entitySlug] ?: emptyList()
     }
 
     /**
      * Adds droptable to the global droptable
      * @param droptable to merge
      * */
-    fun loadDroptable(droptable: MutableMap<String, List<YamlEntity>>) {
+    fun loadDroptable(droptable: MutableMap<String, List<DropTableEntry>>) {
         for(key in droptable.keys) {
-            innerDroptable[key] = innerDroptable[key].orEmpty() +
-                    (droptable[key] as List<DropTableEntry>?).orEmpty()
+            val keySlug = key.uppercase().replace(" ", "_")
+
+            innerDroptable[keySlug] =
+                innerDroptable[keySlug].orEmpty() + droptable[key].orEmpty()
+
+            getLogger().info("Stored droptable for $keySlug: " + innerDroptable[keySlug])
         }
     }
 
