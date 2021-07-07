@@ -29,7 +29,7 @@ Each entry must look like this:
     drop:<br>&ensp;&ensp;
         item1:<br> &ensp;&ensp;&ensp;&ensp;
             name: \<itemname1><br>&ensp;&ensp;&ensp;&ensp;
-            dropchance: \<dropchancePercentage2><br>&ensp;&ensp;
+            dropchance: \<dropchancePercentage1><br>&ensp;&ensp;
         item2:<br>&ensp;&ensp;&ensp;&ensp;
             name: \<itemname2><br>&ensp;&ensp;&ensp;&ensp;
             dropchance: \<dropchancePercentage2>
