@@ -18,10 +18,11 @@ object DroptableEntryBuilder : YamlModel() {
             for (key in configSectionKeys) {
                val name = yamlFile.getString("$path.$key.name") ?: continue
                val dropChance = yamlFile.getString("$path.$key.dropchance") ?: continue
-               // Quantity defaults to 1 if not specified in the Yaml file
-               val quantity = yamlFile.getInt("$path.$key.quantity", 1)
+               // minQuantity defaults to 0 and maxQuantity to 1 if values not provided
+               val minQuantity = yamlFile.getInt("$path.$key.minQuantity", 0)
+               val maxQuantity = yamlFile.getInt("$path.$key.maxQuantity", 1)
 
-               entityList.add(DropTableEntry(name, dropChance.toDouble(), quantity))
+               entityList.add(DropTableEntry(name, dropChance.toDouble(), minQuantity, maxQuantity))
             }
 
             return entityList

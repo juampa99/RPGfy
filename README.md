@@ -56,8 +56,13 @@ Supported item traits
         <td>1.0E-16 - 100</td>
     </tr>
     <tr>
-        <td>quantity</td>
-        <td>Amount of items in the stack</td>
+        <td>minQuantity</td>
+        <td>Minimum amount of item that will drop if it does drop</td>
+        <td>0 - 64</td>
+    </tr>
+    <tr>
+        <td>maxQuantity</td>
+        <td>Max amount of item that will drop if it does drop</td>
         <td>1 - 64</td>
     </tr>
 </table>

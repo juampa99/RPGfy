@@ -3,6 +3,7 @@ package git.juampa99.rpgfy.droptable.listener
 import git.juampa99.rpgfy.droptable.service.DroptableService
 import git.juampa99.rpgfy.droptable.ymlparser.entity.DropTableEntry
 import git.juampa99.rpgfy.gear.builder.service.ItemBuilder
+import git.juampa99.rpgfy.utils.string.toSlug
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.Material
 import org.bukkit.entity.EntityCategory
@@ -28,9 +29,12 @@ class DroptableListener : Listener {
 
             // Drop item if roll is between 0 and drop chance
             if(roll <= item.dropChance) {
-                val itemSlug = item.itemName.uppercase().replace(" ", "_")
+                val itemSlug = item.itemName.toSlug()
                 val itemStack = ItemStack(Material.valueOf(itemSlug))
-                itemStack.amount = item.quantity
+                val minQuantity = item.minQuantity
+                val maxQuantity = item.maxQuantity
+
+                itemStack.amount = Random.nextInt(minQuantity, maxQuantity)
 
                 event.entity.world.dropItem(event.entity.location, itemStack)
             }

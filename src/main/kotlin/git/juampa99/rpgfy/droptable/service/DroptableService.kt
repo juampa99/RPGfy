@@ -2,6 +2,7 @@ package git.juampa99.rpgfy.droptable.service
 
 import git.juampa99.rpgfy.droptable.ymlparser.entity.DropTableEntry
 import git.juampa99.rpgfy.droptable.ymlparser.entity.YamlEntity
+import git.juampa99.rpgfy.utils.string.toSlug
 import org.bukkit.Bukkit.getLogger
 
 object DroptableService {
@@ -14,7 +15,7 @@ object DroptableService {
      * @return entity's droptable or empty list if doesnt exist
      * */
     fun getDropsFromEntity(entity: String): List<DropTableEntry> {
-        val entitySlug = entity.uppercase().replace(" ", "_")
+        val entitySlug = entity.toSlug()
         return innerDroptable[entitySlug] ?: emptyList()
     }
 
@@ -24,7 +25,7 @@ object DroptableService {
      * */
     fun loadDroptable(droptable: MutableMap<String, List<DropTableEntry>>) {
         for(key in droptable.keys) {
-            val keySlug = key.uppercase().replace(" ", "_")
+            val keySlug = key.toSlug()
 
             innerDroptable[keySlug] =
                 innerDroptable[keySlug].orEmpty() + droptable[key].orEmpty()
