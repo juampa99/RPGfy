@@ -17,7 +17,8 @@ object DroptableEntryBuilder : YamlBuilder() {
             val configSectionKeys = configSection.getKeys(false)
 
             for (key in configSectionKeys) {
-               val name = yamlFile.getString("$path.$key.name") ?: continue
+               val type = yamlFile.getString("$path.$key.type") ?: continue
+               val name = yamlFile.getString("$path.$key.name", type)!!
                // Dropchance must be provided, otherwise it skips the entry
                val dropChance = yamlFile.getString("$path.$key.dropchance")?.toDouble() ?: continue
                // minQuantity defaults to 0 and maxQuantity to 1 if values not provided
@@ -28,7 +29,7 @@ object DroptableEntryBuilder : YamlBuilder() {
                if(minQuantity > 64) minQuantity = 64
                if(maxQuantity > 64) maxQuantity = 64
 
-               entityList.add(DropTableEntry(name, dropChance, minQuantity, maxQuantity))
+               entityList.add(DropTableEntry(name, type, dropChance, minQuantity, maxQuantity))
             }
 
             return entityList

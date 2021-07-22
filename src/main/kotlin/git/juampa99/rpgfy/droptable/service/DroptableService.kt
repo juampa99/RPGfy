@@ -34,14 +34,14 @@ object DroptableService {
 
             if(roll <= item.dropChance) {
                 val itemEntity: Item
-                val itemSlug = item.itemName.toSlug()
                 val itemAmount = Random.nextInt(item.minQuantity, item.maxQuantity)
 
                 itemEntity =
-                if(CustomItemService.itemExists(item.itemName))
-                    CustomItemService.getItem(item.itemName) ?: continue
+                if(CustomItemService.itemExists(item.itemType))
+                    CustomItemService.getItem(item.itemType) ?: continue
                 else {
-                    val itemMaterial = try { Material.valueOf(itemSlug) } catch(e: IllegalArgumentException){ continue }
+                    val itemMaterial = try { Material.valueOf(item.itemType.toSlug()) }
+                                       catch(e: IllegalArgumentException){ continue }
                     Item(item.itemName, listOf(""), itemMaterial, itemAmount)
                 }
 
