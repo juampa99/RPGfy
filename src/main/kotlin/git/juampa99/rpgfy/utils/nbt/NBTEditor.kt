@@ -1,4 +1,4 @@
-package git.juampa99.rpgfy.gear.nbt
+package git.juampa99.rpgfy.utils.nbt
 
 import net.minecraft.server.v1_16_R3.*
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack

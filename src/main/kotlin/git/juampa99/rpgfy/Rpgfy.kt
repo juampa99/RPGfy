@@ -7,10 +7,12 @@ import git.juampa99.rpgfy.gear.effect.entity.impl.weapon.SlownessEffect
 import git.juampa99.rpgfy.gear.effect.listener.EffectListener
 import git.juampa99.rpgfy.gear.effect.registry.EffectRegistry
 import git.juampa99.rpgfy.healthbar.listener.HealthBarListener
-import git.juampa99.rpgfy.droptable.ymlparser.YamlParser
-import git.juampa99.rpgfy.droptable.ymlparser.entity.DropTableEntry
-import git.juampa99.rpgfy.droptable.ymlparser.entity.YamlEntity
-import git.juampa99.rpgfy.droptable.ymlparser.model.DroptableEntryBuilder
+import git.juampa99.rpgfy.utils.ymlparser.YamlParser
+import git.juampa99.rpgfy.droptable.entity.DropTableEntry
+import git.juampa99.rpgfy.droptable.builder.DroptableEntryBuilder
+import git.juampa99.rpgfy.gear.builder.entity.Item
+import git.juampa99.rpgfy.gear.custom.builder.ItemYamlBuilder
+import git.juampa99.rpgfy.gear.custom.service.CustomItemService
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.plugin.java.JavaPlugin
@@ -28,6 +30,9 @@ class Rpgfy : JavaPlugin() {
 
         saveDefaultConfig()
 
+        // Custom items MUST be loaded before droptable, since
+        // it depends on custom items
+        loadCustomItems()
         loadDroptable()
 
         registerEffects()
@@ -50,6 +55,15 @@ class Rpgfy : JavaPlugin() {
         this.getCommand("spawngear")?.setExecutor(SpawnGearCommand())
     }
 
+    private fun loadCustomItems() {
+        val items = YamlParser.parseYmlConfig("custom_items.yml",
+            "", ItemYamlBuilder).filterIsInstance<Item>()
+
+        logger.info(items.toString())
+
+        CustomItemService.storeItems(items)
+    }
+
     private fun loadDroptable() {
         // This could be done taking entries of the yaml file
         val entities = listOf("zombie", "creeper", "skeleton", "enderman")
@@ -58,10 +72,11 @@ class Rpgfy : JavaPlugin() {
         for(entity in entities) {
             droptable[entity] =
                 YamlParser.parseYmlConfig("droptable.yml",
-                    "$entity.drop", DroptableEntryBuilder).filterIsInstance<DropTableEntry>()
+                    "$entity.drop", DroptableEntryBuilder
+                ).filterIsInstance<DropTableEntry>()
         }
 
-        DroptableService.loadDroptable(droptable)
+        DroptableService.storeDrops(droptable)
     }
 
     /*

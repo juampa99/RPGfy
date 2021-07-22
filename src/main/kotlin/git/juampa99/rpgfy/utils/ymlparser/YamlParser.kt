@@ -1,8 +1,8 @@
-package git.juampa99.rpgfy.droptable.ymlparser
+package git.juampa99.rpgfy.utils.ymlparser
 
 import git.juampa99.rpgfy.Rpgfy
-import git.juampa99.rpgfy.droptable.ymlparser.entity.YamlEntity
-import git.juampa99.rpgfy.droptable.ymlparser.model.YamlModel
+import git.juampa99.rpgfy.utils.ymlparser.entity.YamlEntity
+import git.juampa99.rpgfy.utils.ymlparser.builder.YamlBuilder
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 
@@ -12,9 +12,9 @@ object YamlParser {
      * Parses a Yaml file to a list of YamlEntity
      * @param filePath path relative to /resources
      * @param objectPath path of the entity in the yaml file
-     * @param model entity builder, must extend YamlModel
+     * @param builder entity builder, must extend YamlModel
      * */
-    fun parseYmlConfig(filePath: String, objectPath: String, model: YamlModel): List<YamlEntity> {
+    fun parseYmlConfig(filePath: String, objectPath: String, builder: YamlBuilder): List<YamlEntity> {
 
         val file = File(Rpgfy.plugin?.dataFolder, filePath)
 
@@ -26,7 +26,7 @@ object YamlParser {
         val yamlFile = YamlConfiguration.loadConfiguration(file)
         val configSection = yamlFile.getConfigurationSection(objectPath) ?: return emptyList()
 
-        return model.buildEntities(objectPath, configSection, yamlFile)
+        return builder.buildEntities(objectPath, configSection, yamlFile)
     }
 
 }

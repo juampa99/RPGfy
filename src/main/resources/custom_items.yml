@@ -1,0 +1,13 @@
+item1:
+  name: "SwordyMcSwordFace"
+  lore: "OwO"
+  type: "Weapon"
+  weaponType: "Sword"
+  damage: 10
+  attackSpeed: 1.2
+item2:
+  name: "ChestyMcChestface"
+  lore: "UwU"
+  type: "Armor"
+  armorType: "chestplate"
+  defense: 10

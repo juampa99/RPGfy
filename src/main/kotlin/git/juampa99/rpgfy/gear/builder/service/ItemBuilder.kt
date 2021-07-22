@@ -2,6 +2,7 @@ package git.juampa99.rpgfy.gear.builder.service
 
 import git.juampa99.rpgfy.gear.effect.service.EffectService
 import git.juampa99.rpgfy.gear.builder.entity.GearPrototype
+import git.juampa99.rpgfy.gear.builder.entity.Item
 import git.juampa99.rpgfy.gear.builder.entity.armor.ArmorPiece
 import git.juampa99.rpgfy.gear.builder.entity.weapon.Weapon
 import git.juampa99.rpgfy.gear.builder.util.constants.AttributeStrings
@@ -47,8 +48,9 @@ object ItemBuilder {
         item.itemMeta = itemMeta
     }
 
-    private fun createItem(name: String, lore: List<String>, type: Material): ItemStack {
-        val item = ItemStack(type, 1)
+    private fun createBasicItem(name: String, lore: List<String>,
+                                type: Material, quantity: Int = 1): ItemStack {
+        val item = ItemStack(type, quantity)
 
         setName(item, name)
         addLore(item, lore)
@@ -62,7 +64,7 @@ object ItemBuilder {
     }
 
     private fun createWeapon(weapon: Weapon): ItemStack {
-        val item: ItemStack = createItem(weapon.name, weapon.lore, weapon.type)
+        val item: ItemStack = createBasicItem(weapon.name, weapon.lore, weapon.type)
 
         addAttribute(item, weapon.attackSpeed, AttributeStrings.Item.ATTACK_SPEED,
             Attribute.GENERIC_ATTACK_SPEED, weapon.slot)
@@ -78,7 +80,7 @@ object ItemBuilder {
     }
 
     private fun createArmorPiece(armorPiece: ArmorPiece): ItemStack {
-        val item: ItemStack = createItem(armorPiece.name, armorPiece.lore, armorPiece.type)
+        val item: ItemStack = createBasicItem(armorPiece.name, armorPiece.lore, armorPiece.type)
 
         addAttribute(item, armorPiece.armor, AttributeStrings.Item.ARMOR,
             Attribute.GENERIC_ARMOR, armorPiece.slot)
@@ -100,11 +102,11 @@ object ItemBuilder {
      * @return generated item
      * */
     @Throws(InvalidItemException::class)
-    fun createItem(gear: GearPrototype): ItemStack {
+    fun createItem(gear: Item): ItemStack {
         return when(gear) {
             is Weapon -> createWeapon(gear)
             is ArmorPiece -> createArmorPiece(gear)
-            else -> throw InvalidItemException("No type of weapon matches input")
+            else -> createBasicItem(gear.name, gear.lore, gear.type, gear.quantity)
         }
     }
 }

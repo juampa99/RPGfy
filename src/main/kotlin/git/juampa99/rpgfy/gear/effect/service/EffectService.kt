@@ -5,14 +5,12 @@ import git.juampa99.rpgfy.gear.effect.entity.*
 import git.juampa99.rpgfy.gear.effect.event.EffectFadeEvent
 import git.juampa99.rpgfy.gear.effect.event.EffectTriggerEvent
 import git.juampa99.rpgfy.gear.effect.manager.CooldownManager
-import git.juampa99.rpgfy.gear.nbt.NBTEditor
+import git.juampa99.rpgfy.utils.nbt.NBTEditor
 import git.juampa99.rpgfy.gear.effect.registry.EffectRegistry
-import net.minecraft.server.v1_16_R3.MinecraftServer
 import org.bukkit.Bukkit
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 object EffectService {
 
