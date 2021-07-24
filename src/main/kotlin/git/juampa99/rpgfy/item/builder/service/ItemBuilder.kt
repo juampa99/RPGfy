@@ -72,7 +72,7 @@ object ItemBuilder {
 
         // Adds effects to the items lore, as "Effect Name LEVEL"
         addLore(item, weapon.effects.toList().map{ el ->
-            ColorCodes.GREEN + el.first.name.lowercase().capitalize() + " " + el.second
+            ColorCodes.GREEN + el.first.name.lowercase().replaceFirstChar { c -> c.uppercase() } + " " + el.second
         })
 
         return addEffects(item, weapon.effects)

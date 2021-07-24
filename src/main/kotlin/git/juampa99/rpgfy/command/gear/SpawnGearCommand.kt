@@ -1,9 +1,11 @@
 package git.juampa99.rpgfy.command.gear
 
+import git.juampa99.rpgfy.item.builder.entity.GearPrototype
 import git.juampa99.rpgfy.item.builder.entity.armor.*
 import git.juampa99.rpgfy.item.builder.service.ItemBuilder
 import git.juampa99.rpgfy.item.builder.entity.weapon.Sword
 import git.juampa99.rpgfy.item.builder.entity.weapon.Weapon
+import git.juampa99.rpgfy.item.custom.registry.CustomItemRegister
 import git.juampa99.rpgfy.item.effect.entity.ArmorEffect
 import git.juampa99.rpgfy.item.effect.entity.WeaponEffect
 import git.juampa99.rpgfy.item.effect.entity.impl.weapon.SlownessEffect
@@ -87,7 +89,7 @@ class SpawnGearCommand : CommandExecutor {
      * */
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(sender !is Player) return false
-        if(args.size < 2) return false
+        if(!CustomItemRegister.itemExists(args[0]) && args.size < 2) return false
         if(args[0].lowercase() == "test") {
             val testSword = Sword(
                 "Test Sword",
@@ -100,10 +102,16 @@ class SpawnGearCommand : CommandExecutor {
         }
 
         try {
-            val gearPiece = when((args[0]).lowercase()) {
-                "armor" -> createArmor(args)
-                "weapon" -> createWeapon(args)
-                else -> return false
+
+            val gearPiece: GearPrototype = if(CustomItemRegister.itemExists(args[0])) {
+                (CustomItemRegister.getItem(args[0]) ?: return false) as GearPrototype
+            } else {
+                when((args[0]).lowercase()) {
+                    "armor" -> createArmor(args)
+                    "weapon" -> createWeapon(args)
+                    else -> return false
+                }
+
             }
 
             sender.inventory.addItem(ItemBuilder.createItem(gearPiece))

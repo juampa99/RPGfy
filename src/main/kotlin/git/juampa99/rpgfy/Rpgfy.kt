@@ -12,7 +12,8 @@ import git.juampa99.rpgfy.droptable.entity.DropTableEntry
 import git.juampa99.rpgfy.droptable.builder.DroptableEntryBuilder
 import git.juampa99.rpgfy.item.builder.entity.Item
 import git.juampa99.rpgfy.item.custom.builder.ItemYamlBuilder
-import git.juampa99.rpgfy.item.custom.service.CustomItemService
+import git.juampa99.rpgfy.item.custom.registry.CustomItemRegister
+import git.juampa99.rpgfy.item.effect.entity.impl.weapon.PoisonEffect
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.plugin.java.JavaPlugin
@@ -30,48 +31,62 @@ class Rpgfy : JavaPlugin() {
 
         saveDefaultConfig()
 
+        // Registers must be done before static loading
+        registerEffects()
+        registerEvents()
+        registerCommands()
+
         // Custom items MUST be loaded before droptable, since
         // it depends on custom items
         loadCustomItems()
         loadDroptable()
-
-        registerEffects()
-        registerEvents()
-        registerCommands()
     }
 
     private fun registerEffects() {
+        logger.info("Registering effects..")
+
         // Register effects this should be done somewhere else
         EffectRegistry.register(SlownessEffect)
+        EffectRegistry.register(PoisonEffect)
     }
 
     private fun registerEvents() {
+        logger.info("Registering events..")
+
         server.pluginManager.registerEvents(HealthBarListener(), this)
         server.pluginManager.registerEvents(EffectListener(), this)
         server.pluginManager.registerEvents(DroptableListener(), this)
     }
 
     private fun registerCommands() {
+        logger.info("Registering commands..")
+
         this.getCommand("spawngear")?.setExecutor(SpawnGearCommand())
     }
 
     private fun loadCustomItems() {
-        val items = YamlParser.parseYmlConfig("custom_items.yml",
+        val filePath = "custom_items.yml"
+        logger.info("Loading custom items from $filePath..")
+
+        val items = YamlParser.parseYmlConfig(filePath,
             "", ItemYamlBuilder).filterIsInstance<Item>()
 
         logger.info(items.toString())
 
-        CustomItemService.storeItems(items)
+        CustomItemRegister.registerItems(items)
     }
 
     private fun loadDroptable() {
+        val filePath = "droptable.yml"
+        logger.info("Loading droptable from $filePath..")
+
         // This could be done taking entries of the yaml file
         val entities = listOf("zombie", "creeper", "skeleton", "enderman")
         val droptable = mutableMapOf<String, List<DropTableEntry>>()
 
         for(entity in entities) {
             droptable[entity] =
-                YamlParser.parseYmlConfig("droptable.yml",
+                YamlParser.parseYmlConfig(filePath,
                     "$entity.drop", DroptableEntryBuilder
                 ).filterIsInstance<DropTableEntry>()
         }

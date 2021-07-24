@@ -2,23 +2,26 @@
 
 RPGfy is a spigot plugin that adds a compendium of RPG elements to minecraft.
 
+### Table of contents
+- [Droptable](#droptable)
+- [Custom Items](#custom-items)
+- [Healthbar](#healthbar)
+- [Developers](#developers)
+
 Features: 
 * Customizable healthbars (see config.yml)
 * Custom item generator (/spawngear command)
 * Drop tables (see Droptable section)
+* Save custom items and add them to the drop tables (see Custom Items section)
 
 Upcoming features:
-* Save custom items and add them to the drop tables
 * Better effects for weapons 
 * Special abilities for weapons/armor
 * More types of weapons
 * Combo effects
 
 
-## Droptable 
-<small> This feature is still developing and is not
-completly functional yet, nonetheless, 
-here's a small guide to help you get accustommed to it</small>
+## Droptable
 
 Edit the droptable.yml file located in the plugins/RPGfy folder to
 add custom droptables to entities.
@@ -84,3 +87,14 @@ Supported item traits
     </tr>
 </table>
 
+## Custom Items
+
+Documentation in progress
+
+## Healthbar
+
+Documentation in progress
+
+## Developers
+
+Documentation in progress

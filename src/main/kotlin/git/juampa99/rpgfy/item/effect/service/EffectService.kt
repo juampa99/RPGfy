@@ -75,9 +75,6 @@ object EffectService {
             return
         }
 
-
-
     }
-
 
 }

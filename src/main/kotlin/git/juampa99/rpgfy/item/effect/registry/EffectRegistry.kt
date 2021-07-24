@@ -15,6 +15,10 @@ object EffectRegistry {
         registry[effect.name] = effect
     }
 
+    /**
+     * Returns effect from the effects name
+     * @return Registered effect with a matching name
+     * */
     fun getEffect(effectName: String): Effect? {
         return registry[effectName]
     }
