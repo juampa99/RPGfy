@@ -1,13 +1,12 @@
 package git.juampa99.rpgfy.healthbar.service
 
 import git.juampa99.rpgfy.Rpgfy
-import git.juampa99.rpgfy.gear.effect.entity.Effect
+import git.juampa99.rpgfy.item.effect.entity.Effect
 import git.juampa99.rpgfy.utils.string.Color
 import git.juampa99.rpgfy.utils.string.ColorCodes
 import git.juampa99.rpgfy.utils.string.ColorCodes.getColorConstant
 import git.juampa99.rpgfy.utils.string.FormatCodes
 import org.bukkit.Bukkit
-import org.bukkit.Bukkit.getLogger
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.*
 import java.util.*

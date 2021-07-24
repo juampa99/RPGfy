@@ -1,10 +1,9 @@
 package git.juampa99.rpgfy.droptable.service
 
 import git.juampa99.rpgfy.droptable.entity.DropTableEntry
-import git.juampa99.rpgfy.gear.builder.entity.Item
-import git.juampa99.rpgfy.gear.builder.entity.weapon.Sword
-import git.juampa99.rpgfy.gear.builder.service.ItemBuilder
-import git.juampa99.rpgfy.gear.custom.service.CustomItemService
+import git.juampa99.rpgfy.item.builder.entity.Item
+import git.juampa99.rpgfy.item.builder.service.ItemBuilder
+import git.juampa99.rpgfy.item.custom.service.CustomItemService
 import git.juampa99.rpgfy.utils.string.toSlug
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.Material

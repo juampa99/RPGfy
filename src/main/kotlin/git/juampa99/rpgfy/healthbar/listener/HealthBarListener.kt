@@ -1,7 +1,7 @@
 package git.juampa99.rpgfy.healthbar.listener
 
-import git.juampa99.rpgfy.gear.effect.event.EffectFadeEvent
-import git.juampa99.rpgfy.gear.effect.event.EffectTriggerEvent
+import git.juampa99.rpgfy.item.effect.event.EffectFadeEvent
+import git.juampa99.rpgfy.item.effect.event.EffectTriggerEvent
 import git.juampa99.rpgfy.healthbar.service.HealthBarService
 import git.juampa99.rpgfy.healthbar.service.HealthBarService.updateHealthBar
 import org.bukkit.Material

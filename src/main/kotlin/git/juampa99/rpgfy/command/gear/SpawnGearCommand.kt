@@ -1,13 +1,12 @@
 package git.juampa99.rpgfy.command.gear
 
-import git.juampa99.rpgfy.gear.builder.entity.armor.*
-import git.juampa99.rpgfy.gear.builder.service.ItemBuilder
-import git.juampa99.rpgfy.gear.builder.entity.weapon.Sword
-import git.juampa99.rpgfy.gear.builder.entity.weapon.Weapon
-import git.juampa99.rpgfy.gear.effect.entity.ArmorEffect
-import git.juampa99.rpgfy.gear.effect.entity.WeaponEffect
-import git.juampa99.rpgfy.gear.effect.entity.impl.weapon.SlownessEffect
-import net.minecraft.server.v1_16_R3.MinecraftServer
+import git.juampa99.rpgfy.item.builder.entity.armor.*
+import git.juampa99.rpgfy.item.builder.service.ItemBuilder
+import git.juampa99.rpgfy.item.builder.entity.weapon.Sword
+import git.juampa99.rpgfy.item.builder.entity.weapon.Weapon
+import git.juampa99.rpgfy.item.effect.entity.ArmorEffect
+import git.juampa99.rpgfy.item.effect.entity.WeaponEffect
+import git.juampa99.rpgfy.item.effect.entity.impl.weapon.SlownessEffect
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
