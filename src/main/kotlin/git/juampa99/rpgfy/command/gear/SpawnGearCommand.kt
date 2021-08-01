@@ -8,6 +8,7 @@ import git.juampa99.rpgfy.item.builder.entity.weapon.Weapon
 import git.juampa99.rpgfy.item.custom.registry.CustomItemRegister
 import git.juampa99.rpgfy.item.effect.entity.ArmorEffect
 import git.juampa99.rpgfy.item.effect.entity.WeaponEffect
+import git.juampa99.rpgfy.item.effect.entity.impl.weapon.PoisonEffect
 import git.juampa99.rpgfy.item.effect.entity.impl.weapon.SlownessEffect
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.command.Command
@@ -18,8 +19,9 @@ import org.bukkit.entity.Player
 class SpawnGearCommand : CommandExecutor {
 
     private fun getWeaponEffect(effectName: String): WeaponEffect {
-        when(effectName) {
-            SlownessEffect.name -> return SlownessEffect
+        return when(effectName) {
+            SlownessEffect.name -> SlownessEffect
+            PoisonEffect.name -> PoisonEffect
             else -> throw RuntimeException("No effect named $effectName exists")
         }
     }
@@ -90,6 +92,7 @@ class SpawnGearCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(sender !is Player) return false
         if(!CustomItemRegister.itemExists(args[0]) && args.size < 2) return false
+        // /spawngear test, spawns a test sword and returns
         if(args[0].lowercase() == "test") {
             val testSword = Sword(
                 "Test Sword",

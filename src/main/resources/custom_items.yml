@@ -1,3 +1,4 @@
+# Examples:
 item1:
   name: "SwordyMcSwordFace"
   lore: "OwO"
@@ -5,6 +6,7 @@ item1:
   weaponType: "Sword"
   damage: 10
   attackSpeed: 1.2
+  skin: "Brown"
   effects:
     effect1:
       name: POISON

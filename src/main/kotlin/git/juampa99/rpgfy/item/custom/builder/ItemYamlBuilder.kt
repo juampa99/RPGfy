@@ -3,6 +3,7 @@ package git.juampa99.rpgfy.item.custom.builder
 import git.juampa99.rpgfy.item.builder.entity.Item
 import git.juampa99.rpgfy.item.builder.entity.armor.*
 import git.juampa99.rpgfy.item.builder.entity.weapon.Sword
+import git.juampa99.rpgfy.item.builder.entity.weapon.Weapon
 import git.juampa99.rpgfy.item.effect.entity.Effect
 import git.juampa99.rpgfy.item.effect.registry.EffectRegistry
 import git.juampa99.rpgfy.utils.string.toSlug
@@ -40,6 +41,16 @@ object ItemYamlBuilder: YamlBuilder() {
         return effectList
     }
 
+    private fun getSwordSkin(skinName: String): Material {
+        return when(skinName) {
+            "White" -> Material.IRON_SWORD
+            "Brown" -> Material.WOODEN_SWORD
+            "Grey" -> Material.STONE_SWORD
+            "Red" -> Material.NETHERITE_SWORD
+            else -> Material.DIAMOND_SWORD
+        }
+    }
+
     override fun buildEntities(
         path: String,
         configSection: ConfigurationSection,
@@ -47,6 +58,7 @@ object ItemYamlBuilder: YamlBuilder() {
     ): List<YamlEntity> {
         val itemList = mutableListOf<Item>()
         val configSectionKeys = configSection.getKeys(false)
+        val myVar: Int = 5
 
         for (key in configSectionKeys) {
             // Non-optional values skip this item if not present
@@ -64,12 +76,14 @@ object ItemYamlBuilder: YamlBuilder() {
                     when(weaponType.replaceFirstChar { c -> c.uppercase() }) {
                         "Sword" -> {
                             val weapon = Sword("Sword")
+                            val skinName = yamlFile.getString("$path.$key.skin", "") ?: ""
 
                             weapon.name = name
                             weapon.lore = lore
                             weapon.effects = effects
                             weapon.damage = yamlFile.getDouble("$path.$key.damage", weapon.damage)
                             weapon.attackSpeed = yamlFile.getDouble("$path.$key.attackSpeed", weapon.attackSpeed)
+                            weapon.type = getSwordSkin(skinName)
 
                             weapon
                         }

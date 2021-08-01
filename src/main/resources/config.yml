@@ -2,4 +2,8 @@ animal-healthbar-color: green
 monster-healthbar-color: red
 player-healthbar-color: red
 show-pasive-animals-healthbar: false
+# This can be set to "bar" or to "numerical"
+# Bar: [||||||||||]
+# Numerical: [currentHp/maxHp]
+healthbar-type: bar
 separator: ' - '

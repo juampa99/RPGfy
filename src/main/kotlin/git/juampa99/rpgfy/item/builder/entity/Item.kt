@@ -5,7 +5,7 @@ import org.bukkit.Material
 
 open class Item(
     var name: String, var lore: List<String>,
-    val type: Material, var quantity: Int
+    var type: Material, var quantity: Int
 ): YamlEntity {
     override fun toString(): String {
         return "$name, $type ($quantity)"

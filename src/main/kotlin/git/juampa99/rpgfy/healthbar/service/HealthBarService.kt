@@ -10,6 +10,7 @@ import org.bukkit.Bukkit
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.*
 import java.util.*
+import kotlin.math.ceil
 import kotlin.math.floor
 
 object HealthBarService {
@@ -19,13 +20,15 @@ object HealthBarService {
 
     // Colors default to WHITE if config cant be retrieved
     private val separator: String =
-        (plugin?.config?.get("separator") ?: ColorCodes.WHITE) as String
+        plugin?.config?.getString("separator") ?: ColorCodes.WHITE
     private val monsterHbColor: String =
-        (plugin?.config?.get("monster-healthbar-color") ?: ColorCodes.WHITE) as String
+        plugin?.config?.getString("monster-healthbar-color") ?: ColorCodes.WHITE
     private val playerHbColor: String =
-        (plugin?.config?.get("player-healthbar-color") ?: ColorCodes.WHITE) as String
+        plugin?.config?.getString("player-healthbar-color") ?: ColorCodes.WHITE
     private val passiveMobHbColor: String =
-        (plugin?.config?.get("animal-healthbar-color") ?: ColorCodes.WHITE) as String
+        plugin?.config?.getString("animal-healthbar-color") ?: ColorCodes.WHITE
+    private val barType =
+        plugin?.config?.getString("healthbar-type") ?: "bar"
 
 
 
@@ -60,6 +63,20 @@ object HealthBarService {
         return color + effectString + FormatCodes.RESET
     }
 
+    private fun generateNumericalHb(currentHealth: Double,
+                                    maxHealth: Double, color: Color): String {
+        return color + "[${ceil(currentHealth).toInt()}/${maxHealth.toInt()}]" + FormatCodes.RESET
+    }
+
+    private fun generateBarHb(currentHealth: Double,
+                              maxHealth: Double, color: Color): String {
+        val totalBars = ceil((currentHealth/maxHealth)*10).toInt()
+        val healthBars = "|".repeat(totalBars)
+        val missingHealthBars = "-".repeat(10-totalBars)
+
+        return "$color[$healthBars$missingHealthBars]${FormatCodes.RESET}"
+    }
+
     /**
      * Generates healthbar string
      * @param currentHealth Number on the left side of the slash
@@ -68,7 +85,8 @@ object HealthBarService {
      * */
     private fun generateHealthBar(currentHealth: Double,
                                   maxHealth: Double, color: Color): String {
-        return color + "[${floor(currentHealth).toInt()}/${maxHealth.toInt()}]" + FormatCodes.RESET
+        return if(barType == "numerical") generateNumericalHb(currentHealth, maxHealth, color)
+               else generateBarHb(currentHealth, maxHealth, color)
     }
 
     private fun generateEntityName(entityName: String, separator: String, color: Color): String {

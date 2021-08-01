@@ -74,7 +74,8 @@ object DroptableService {
             innerDroptable[keySlug] =
                 innerDroptable[keySlug].orEmpty() + droptable[key].orEmpty()
 
-            getLogger().info("Stored droptable for $keySlug: " + innerDroptable[keySlug])
+            if(innerDroptable[keySlug] != null)
+                getLogger().info("Stored droptable for $keySlug: " + innerDroptable[keySlug])
         }
     }
 
