@@ -79,9 +79,10 @@ object HealthBarService {
 
     /**
      * Generates healthbar string
-     * @param currentHealth Number on the left side of the slash
-     * @param maxHealth Number on the right side of the slash
-     * @return red string of the form [currentHealth/maxHealth]
+     * @param currentHealth Entity current health
+     * @param maxHealth Entity total health
+     * @return String representing the difference between current and max health can be a bar or numerical
+     * depending on the configuration
      * */
     private fun generateHealthBar(currentHealth: Double,
                                   maxHealth: Double, color: Color): String {
