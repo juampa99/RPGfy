@@ -5,11 +5,11 @@ import git.juampa99.rpgfy.item.builder.entity.armor.*
 import git.juampa99.rpgfy.item.builder.service.ItemBuilder
 import git.juampa99.rpgfy.item.builder.entity.weapon.Sword
 import git.juampa99.rpgfy.item.builder.entity.weapon.Weapon
-import git.juampa99.rpgfy.item.custom.registry.CustomItemRegister
+import git.juampa99.rpgfy.item.custom.registry.CustomItemRegistry
 import git.juampa99.rpgfy.item.effect.entity.ArmorEffect
 import git.juampa99.rpgfy.item.effect.entity.WeaponEffect
-import git.juampa99.rpgfy.item.effect.entity.impl.weapon.PoisonEffect
 import git.juampa99.rpgfy.item.effect.entity.impl.weapon.SlownessEffect
+import git.juampa99.rpgfy.item.effect.registry.EffectRegistry
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -18,19 +18,6 @@ import org.bukkit.entity.Player
 
 class SpawnGearCommand : CommandExecutor {
 
-    private fun getWeaponEffect(effectName: String): WeaponEffect {
-        return when(effectName) {
-            SlownessEffect.name -> SlownessEffect
-            PoisonEffect.name -> PoisonEffect
-            else -> throw RuntimeException("No effect named $effectName exists")
-        }
-    }
-
-    private fun getArmorEffect(effectName: String): ArmorEffect {
-        when(effectName) {
-            else -> throw RuntimeException("No effect named $effectName exists")
-        }
-    }
 
     private fun createWeapon(args: Array<out String>): Weapon {
         val itemName: String = args[2]
@@ -47,7 +34,7 @@ class SpawnGearCommand : CommandExecutor {
             var i = 5
 
             while(i < args.size) {
-                effects.add(Pair(getWeaponEffect(args[i]), args[i+1].toInt()))
+                effects.add(Pair(EffectRegistry.getEffect(args[i]) as WeaponEffect, args[i+1].toInt()))
                 i += 2
             }
 
@@ -75,7 +62,7 @@ class SpawnGearCommand : CommandExecutor {
             var i = 5
 
             while(i < args.size) {
-                effects.add(Pair(getArmorEffect(args[i]), args[i+1].toInt()))
+                effects.add(Pair(EffectRegistry.getEffect(args[i]) as ArmorEffect, args[i+1].toInt()))
                 i += 2
             }
 
@@ -91,7 +78,8 @@ class SpawnGearCommand : CommandExecutor {
      * */
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(sender !is Player) return false
-        if(!CustomItemRegister.itemExists(args[0]) && args.size < 2) return false
+        if(args.isEmpty() || (!CustomItemRegistry.itemExists(args[0]) && args.size < 2))
+            return false
         // /spawngear test, spawns a test sword and returns
         if(args[0].lowercase() == "test") {
             val testSword = Sword(
@@ -106,8 +94,8 @@ class SpawnGearCommand : CommandExecutor {
 
         try {
 
-            val gearPiece: GearPrototype = if(CustomItemRegister.itemExists(args[0])) {
-                (CustomItemRegister.getItem(args[0]) ?: return false) as GearPrototype
+            val gearPiece: GearPrototype = if(CustomItemRegistry.itemExists(args[0])) {
+                (CustomItemRegistry.getItem(args[0]) ?: return false) as GearPrototype
             } else {
                 when((args[0]).lowercase()) {
                     "armor" -> createArmor(args)

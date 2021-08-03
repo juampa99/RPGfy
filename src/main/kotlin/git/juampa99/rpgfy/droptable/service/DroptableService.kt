@@ -3,7 +3,7 @@ package git.juampa99.rpgfy.droptable.service
 import git.juampa99.rpgfy.droptable.entity.DropTableEntry
 import git.juampa99.rpgfy.item.builder.entity.Item
 import git.juampa99.rpgfy.item.builder.service.ItemBuilder
-import git.juampa99.rpgfy.item.custom.registry.CustomItemRegister
+import git.juampa99.rpgfy.item.custom.registry.CustomItemRegistry
 import git.juampa99.rpgfy.utils.string.toSlug
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.Material
@@ -36,8 +36,8 @@ object DroptableService {
                 val itemAmount = Random.nextInt(item.minQuantity, item.maxQuantity)
 
                 itemEntity =
-                if(CustomItemRegister.itemExists(item.itemType))
-                    CustomItemRegister.getItem(item.itemType) ?: continue
+                if(CustomItemRegistry.itemExists(item.itemType))
+                    CustomItemRegistry.getItem(item.itemType) ?: continue
                 else {
                     val itemMaterial = try { Material.valueOf(item.itemType.toSlug()) }
                                        catch(e: IllegalArgumentException){ continue }

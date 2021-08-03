@@ -12,3 +12,7 @@ commands:
           /spawngear weapon <type> <name> <damage?> <attack_speed?> <effect1?> <value1?> ... <effectN?> <valueN?>
           (Parameters marked with "?" are optional)
     permission: rpgfy.spawngear
+  list:
+    description: Shows a list of custom items or effects
+    usage: /list <effects/items>
+    permission: rpgfy.list

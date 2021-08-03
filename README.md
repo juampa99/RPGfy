@@ -3,6 +3,7 @@
 RPGfy is a spigot plugin that adds a compendium of RPG elements to minecraft.
 
 ### Table of contents
+- [Commands](#commands)
 - [Droptable](#droptable)
 - [Custom Items](#custom-items)
 - [Healthbar](#healthbar)
@@ -21,6 +22,31 @@ Upcoming features (in order of priority):
 * Questing
 * Combo effects
 
+## Commands
+
+### spawngear
+
+Gives a custom weapon or armor to the caller
+
+    /spawngear <custom_item_name>
+
+    /spawngear armor <type> <name> <armor?> <armor_toughness?> <effect1?> <value1?> ... <effectN?> <valueN?>
+
+    /spawngear weapon <type> <name> <damage?> <attack_speed?> <effect1?> <value1?> ... <effectN?> <valueN?>
+
+example:
+/spawngear armor helmet Cap 10 5 Repel 2
+
+Would generate a helmet with name "Cap", 10 armor, 5 armor toughness and repel effect
+
+(Parameters marked with "?" are optional)
+
+---------------------------
+### list
+
+Shows a list of current registered effects or custom items
+
+    /list <effects/items>
 
 ## Droptable
 
@@ -29,14 +55,14 @@ add custom droptables to entities.
 
 Each entry must look like this:
 
-\<mobname>:<br>&ensp;
-    drop:<br>&ensp;&ensp;
-        item1:<br> &ensp;&ensp;&ensp;&ensp;
-            name: \<itemname1><br>&ensp;&ensp;&ensp;&ensp;
-            dropchance: \<dropchancePercentage1><br>&ensp;&ensp;
-        item2:<br>&ensp;&ensp;&ensp;&ensp;
-            name: \<itemname2><br>&ensp;&ensp;&ensp;&ensp;
-            dropchance: \<dropchancePercentage2>
+    <mobname>:
+        drop:
+            item1:
+                name: <itemname1>
+                dropchance: <dropchancePercentage1>
+            item2:
+                name: <itemname2>
+                dropchance: <dropchancePercentage2>
 
 See droptable.yml for a real example
 
@@ -175,7 +201,7 @@ Documentation in progress
 
 ## Healthbar
 
-Documentation in progress
+Displays monster's health over their head
 
 ## Developers
 

@@ -9,6 +9,7 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.inventory.ItemStack
 
 class EffectListener : Listener {
 
@@ -28,11 +29,24 @@ class EffectListener : Listener {
     fun onEntityDamage(event: EntityDamageByEntityEvent) {
         val damager = event.damager
         val damaged = event.entity
+        // Player hit a Mob
         if(damager is Player && damaged is LivingEntity) {
             val itemInHand = damager.inventory.getItem(EquipmentSlot.HAND)
 
             if(EffectService.hasEffects(itemInHand))
                 EffectService.triggerEffects(itemInHand, damager, damaged)
+        }
+        // Mob hit Player
+        else if(damaged is Player && damager is LivingEntity) {
+            val player = damaged
+            val mob = damager
+
+            val armor: List<ItemStack> = listOfNotNull(
+                player.inventory.chestplate, player.inventory.helmet,
+                player.inventory.leggings, player.inventory.boots
+            )
+
+            armor.forEach { item -> EffectService.triggerEffects(item, player, mob) }
         }
     }
 

@@ -8,6 +8,6 @@ open class Item(
     var type: Material, var quantity: Int
 ): YamlEntity {
     override fun toString(): String {
-        return "$name, $type ($quantity)"
+        return "$name[$quantity]"
     }
 }

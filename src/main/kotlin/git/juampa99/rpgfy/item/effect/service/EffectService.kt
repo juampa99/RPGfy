@@ -56,14 +56,16 @@ object EffectService {
                 val cooldown = CooldownManager.getCooldown(emisor, effectInstance)
                 if(cooldown > 0) return@forEach
 
-                val effectDuration = effectInstance.getDuration(effect.value)
+                if(effectInstance.isDebuff()) {
+                    val effectDuration = effectInstance.getDuration(effect.value)
 
-                Bukkit.getPluginManager().callEvent(EffectTriggerEvent(target, effectInstance))
-                // Schedule effect fade event to fire when the effect runs out
-                Rpgfy.plugin?.let {
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(it, {
-                        Bukkit.getPluginManager().callEvent(EffectFadeEvent(target, effectInstance))
-                    }, effectDuration.toLong())
+                    Bukkit.getPluginManager().callEvent(EffectTriggerEvent(target, effectInstance))
+                    // Schedule effect fade event to fire when the effect runs out
+                    Rpgfy.plugin?.let {
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(it, {
+                            Bukkit.getPluginManager().callEvent(EffectFadeEvent(target, effectInstance))
+                        }, effectDuration.toLong())
+                    }
                 }
 
                 CooldownManager.setCooldown(emisor, effectInstance, effect.value)

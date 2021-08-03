@@ -3,7 +3,7 @@ package git.juampa99.rpgfy.item.custom.registry
 import git.juampa99.rpgfy.item.builder.entity.Item
 import org.bukkit.Bukkit
 
-object CustomItemRegister {
+object CustomItemRegistry {
 
     private val items: MutableList<Item> = mutableListOf()
 
@@ -14,6 +14,13 @@ object CustomItemRegister {
      * */
     fun getItem(itemName: String): Item? {
         return items.find{ it.name == itemName}
+    }
+
+    /**
+     * @return list of all items
+     * */
+    fun getAllItems(): List<Item> {
+        return items
     }
 
     /**

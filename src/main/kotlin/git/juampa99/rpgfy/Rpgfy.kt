@@ -1,5 +1,6 @@
 package git.juampa99.rpgfy
 
+import git.juampa99.rpgfy.command.gear.ListCommand
 import git.juampa99.rpgfy.command.gear.SpawnGearCommand
 import git.juampa99.rpgfy.droptable.listener.DroptableListener
 import git.juampa99.rpgfy.droptable.service.DroptableService
@@ -12,7 +13,9 @@ import git.juampa99.rpgfy.droptable.entity.DropTableEntry
 import git.juampa99.rpgfy.droptable.builder.DroptableEntryBuilder
 import git.juampa99.rpgfy.item.builder.entity.Item
 import git.juampa99.rpgfy.item.custom.builder.ItemYamlBuilder
-import git.juampa99.rpgfy.item.custom.registry.CustomItemRegister
+import git.juampa99.rpgfy.item.custom.registry.CustomItemRegistry
+import git.juampa99.rpgfy.item.effect.entity.impl.armor.RepelEffect
+import git.juampa99.rpgfy.item.effect.entity.impl.weapon.LightningEffect
 import git.juampa99.rpgfy.item.effect.entity.impl.weapon.PoisonEffect
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
@@ -46,8 +49,13 @@ class Rpgfy : JavaPlugin() {
         logger.info("Registering effects..")
 
         // Register effects this should be done somewhere else
+        // Weapon effects
         EffectRegistry.register(SlownessEffect)
         EffectRegistry.register(PoisonEffect)
+        EffectRegistry.register(LightningEffect)
+
+        // Armor effects
+        EffectRegistry.register(RepelEffect)
     }
 
     private fun registerEvents() {
@@ -62,6 +70,7 @@ class Rpgfy : JavaPlugin() {
         logger.info("Registering commands..")
 
         this.getCommand("spawngear")?.setExecutor(SpawnGearCommand())
+        this.getCommand("list")?.setExecutor(ListCommand())
     }
 
     private fun loadCustomItems() {
@@ -73,7 +82,7 @@ class Rpgfy : JavaPlugin() {
 
         logger.info(items.toString())
 
-        CustomItemRegister.registerItems(items)
+        CustomItemRegistry.registerItems(items)
     }
 
     private fun loadDroptable() {

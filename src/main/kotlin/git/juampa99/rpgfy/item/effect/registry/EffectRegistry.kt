@@ -1,6 +1,8 @@
 package git.juampa99.rpgfy.item.effect.registry
 
 import git.juampa99.rpgfy.item.effect.entity.Effect
+import git.juampa99.rpgfy.utils.string.toSlug
+import org.bukkit.Bukkit.getLogger
 
 object EffectRegistry {
 
@@ -12,7 +14,8 @@ object EffectRegistry {
      * @param effect to register
      * */
     fun register(effect: Effect) {
-        registry[effect.name] = effect
+        registry[effect.name.toSlug()] = effect
+        getLogger().info("> Registered $effect")
     }
 
     /**
@@ -20,7 +23,14 @@ object EffectRegistry {
      * @return Registered effect with a matching name
      * */
     fun getEffect(effectName: String): Effect? {
-        return registry[effectName]
+        return registry[effectName.toSlug()]
+    }
+
+    /**
+     * @return Returns a list of all effects
+     * */
+    fun getAllEffects(): List<Effect> {
+        return registry.toList().map { el -> el.second }
     }
 
 }

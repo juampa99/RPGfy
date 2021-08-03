@@ -1,3 +1,5 @@
+# Healthbar module
+
 animal-healthbar-color: green
 monster-healthbar-color: red
 player-healthbar-color: red
@@ -6,4 +8,5 @@ show-pasive-animals-healthbar: false
 # Bar: [||||||||||]
 # Numerical: [currentHp/maxHp]
 healthbar-type: bar
+# String that separates monster's healthbar and name
 separator: ' - '
