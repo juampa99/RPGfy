@@ -30,10 +30,10 @@ object CooldownManager {
 
         if(effectMap == null) {
             cooldown[entity.uniqueId] =
-                mutableMapOf(effect.name to MinecraftServer.currentTick + effect.getCooldown(level))
+                mutableMapOf(effect.name to MinecraftServer.currentTick + effect.cooldown(level))
         }
         else {
-            effectMap[effect.name] = MinecraftServer.currentTick + effect.getCooldown(level)
+            effectMap[effect.name] = MinecraftServer.currentTick + effect.cooldown(level)
             cooldown[entity.uniqueId] = effectMap
         }
     }

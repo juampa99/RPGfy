@@ -78,7 +78,7 @@ class SpawnGearCommand : CommandExecutor {
      * */
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(sender !is Player) return false
-        if(args.isEmpty() || (!CustomItemRegistry.itemExists(args[0]) && args.size < 2))
+        if(args.isEmpty() || (!CustomItemRegistry.itemExists(args[0]) && args.size < 2 && args[0] != "test"))
             return false
         // /spawngear test, spawns a test sword and returns
         if(args[0].lowercase() == "test") {

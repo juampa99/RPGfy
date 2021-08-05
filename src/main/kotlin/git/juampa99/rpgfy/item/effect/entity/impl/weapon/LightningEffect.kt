@@ -8,10 +8,12 @@ object LightningEffect : WeaponEffect("LIGHTNING") {
 
     override fun trigger(triggeredBy: LivingEntity,
                          target: LivingEntity, level: Int) {
-        target.world.strikeLightning(target.location)
+        target.world.strikeLightningEffect(target.location)
     }
 
-    override fun getDuration(level: Int): Int {
+    override fun description(): String = "Hits the target with a lightning strike"
+
+    override fun duration(level: Int): Int {
         return 0
     }
 
@@ -19,8 +21,8 @@ object LightningEffect : WeaponEffect("LIGHTNING") {
         return false
     }
 
-    override fun getCooldown(level: Int): Int {
-        return MinecraftServer.TPS * 10 - level
+    override fun cooldown(level: Int): Int {
+        return MinecraftServer.TPS * (10 - level)
     }
 
 }

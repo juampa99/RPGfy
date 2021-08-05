@@ -1,6 +1,7 @@
 package git.juampa99.rpgfy.utils.nbt
 
 import net.minecraft.server.v1_16_R3.*
+import org.bukkit.Bukkit.getLogger
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.inventory.ItemStack
 
@@ -29,10 +30,9 @@ object NBTEditor {
      * @param nbtBase NBTBase of the form {key:value}
      * @return parsed NBTBase to Pair<String, Int>
      * */
-    private fun keyValueToPair(nbtBase: NBTBase): Pair<String, String> {
-        val nbtString = nbtBase.asString()
-        val key = nbtString.substringAfter("{").substringBefore(":")
-        val value = nbtString.substringBefore("}").substringAfter(":")
+    private fun keyValueToPair(str: String): Pair<String, String> {
+        val key = str.substringBefore(":")
+        val value = str.substringAfter(":")
 
         return Pair(key, value)
     }
@@ -42,7 +42,11 @@ object NBTEditor {
      * @param list to parse
      * @return parsed Map of the form Map<String, String>
      * */
-    private fun parseNbtTagList(list: NBTTagList): Map<String, String> {
+    private fun parseNbtTagList(listString: NBTTagList): Map<String, String> {
+        if(listString.isEmpty()) return emptyMap()
+        // List come in a stirng of the form [{key1:val1,key2:val2...keyN:valN}],
+        // this transform that string into a list of strings with entries of the form "keyK:valK"
+        val list = listString[0].asString().drop(1).dropLast(1).split(",")
         // Associate method transforms a List of Pair<k, v> to a Map<k, v>
         return list.associate { elem -> keyValueToPair(elem) }
     }

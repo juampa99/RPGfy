@@ -15,6 +15,7 @@ import git.juampa99.rpgfy.item.builder.entity.Item
 import git.juampa99.rpgfy.item.custom.builder.ItemYamlBuilder
 import git.juampa99.rpgfy.item.custom.registry.CustomItemRegistry
 import git.juampa99.rpgfy.item.effect.entity.impl.armor.RepelEffect
+import git.juampa99.rpgfy.item.effect.entity.impl.weapon.ConflagrateEffect
 import git.juampa99.rpgfy.item.effect.entity.impl.weapon.LightningEffect
 import git.juampa99.rpgfy.item.effect.entity.impl.weapon.PoisonEffect
 import org.bukkit.event.EventHandler
@@ -53,6 +54,7 @@ class Rpgfy : JavaPlugin() {
         EffectRegistry.register(SlownessEffect)
         EffectRegistry.register(PoisonEffect)
         EffectRegistry.register(LightningEffect)
+        EffectRegistry.register(ConflagrateEffect)
 
         // Armor effects
         EffectRegistry.register(RepelEffect)

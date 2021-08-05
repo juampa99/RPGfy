@@ -12,4 +12,8 @@ object FormatCodes {
     const val ITALIC = "§o"
     const val RESET = "§r"
 
+    fun formatAndReset(str: String, format: String): String {
+        return "${format}str$RESET"
+    }
+
 }

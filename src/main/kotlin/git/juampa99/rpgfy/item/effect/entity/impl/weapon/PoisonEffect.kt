@@ -1,6 +1,7 @@
 package git.juampa99.rpgfy.item.effect.entity.impl.weapon
 
 import git.juampa99.rpgfy.item.effect.entity.WeaponEffect
+import git.juampa99.rpgfy.utils.number.cap
 import net.minecraft.server.v1_16_R3.MinecraftServer
 import org.bukkit.entity.LivingEntity
 import org.bukkit.potion.PotionEffect
@@ -10,19 +11,15 @@ object PoisonEffect : WeaponEffect("POISON") {
 
     override fun trigger(triggeredBy: LivingEntity,
                          target: LivingEntity, level: Int) {
-        target.addPotionEffect(PotionEffect(PotionEffectType.POISON, getDuration(level), level))
+        target.addPotionEffect(PotionEffect(PotionEffectType.POISON, duration(level), level))
     }
 
-    override fun getDuration(level: Int): Int {
-        return level * MinecraftServer.TPS
-    }
+    override fun description(): String = "Poisons target"
 
-    override fun isDebuff(): Boolean {
-        return true
-    }
+    override fun duration(level: Int): Int = level * MinecraftServer.TPS
 
-    override fun getCooldown(level: Int): Int {
-        return MinecraftServer.TPS * 10 - level
-    }
+    override fun isDebuff(): Boolean = true
+
+    override fun cooldown(level: Int): Int = (MinecraftServer.TPS * 10) - level.cap(5)
 
 }

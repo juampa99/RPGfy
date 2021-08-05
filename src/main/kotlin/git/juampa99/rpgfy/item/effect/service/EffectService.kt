@@ -46,6 +46,7 @@ object EffectService {
 
         try {
             val effects = NBTEditor.getKeysOnTag(item, "effects")
+            // effects.forEach{ effect -> getLogger().info(effect.toString()) }
             val parsedEffects = effects.mapValues { value -> value.value.toInt() }
 
             // Trigger each effect if its registered
@@ -57,7 +58,7 @@ object EffectService {
                 if(cooldown > 0) return@forEach
 
                 if(effectInstance.isDebuff()) {
-                    val effectDuration = effectInstance.getDuration(effect.value)
+                    val effectDuration = effectInstance.duration(effect.value)
 
                     Bukkit.getPluginManager().callEvent(EffectTriggerEvent(target, effectInstance))
                     // Schedule effect fade event to fire when the effect runs out

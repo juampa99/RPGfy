@@ -8,6 +8,7 @@ RPGfy is a spigot plugin that adds a compendium of RPG elements to minecraft.
 - [Custom Items](#custom-items)
 - [Healthbar](#healthbar)
 - [Developers](#developers)
+- [Known Issues](#known-issues)
 
 Features: 
 * Customizable healthbars (see config.yml)
@@ -206,3 +207,7 @@ Displays monster's health over their head
 ## Developers
 
 Documentation in progress
+
+## Known Issues
+
+- Conflagrate doesn't work underground

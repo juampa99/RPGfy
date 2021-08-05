@@ -7,6 +7,9 @@ import git.juampa99.rpgfy.item.builder.entity.weapon.Weapon
 import git.juampa99.rpgfy.item.builder.util.constants.AttributeStrings
 import git.juampa99.rpgfy.item.effect.entity.Effect
 import git.juampa99.rpgfy.utils.string.ColorCodes
+import git.juampa99.rpgfy.utils.string.FormatCodes
+import git.juampa99.rpgfy.utils.string.capitalizeFirst
+import net.minecraft.server.v1_16_R3.MinecraftServer
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -41,6 +44,34 @@ object ItemBuilder {
         item.itemMeta = itemMeta
     }
 
+    /**
+     * Generates a description using the effects of an item
+     * */
+    private fun generateLoreText(effects: List<Pair<Effect, Int>>): List<String> {
+        return effects.toList().flatMap{ el ->
+            val title = ColorCodes.DARK_RED + FormatCodes.BOLD + "----------- " + FormatCodes.UNDERLINE +
+                    el.first.name.lowercase().capitalizeFirst() + FormatCodes.RESET +
+                    FormatCodes.BOLD + ColorCodes.DARK_RED + " -----------"
+            val levelText = ColorCodes.RED + FormatCodes.BOLD + "Level: " + FormatCodes.RESET +
+                    el.second.toString()
+            val cooldownText = ColorCodes.YELLOW + FormatCodes.BOLD + "Cooldown: " + FormatCodes.RESET +
+                    el.first.cooldown(el.second)/MinecraftServer.TPS + "s"
+            val durationText = if(el.first.isDebuff())
+                ColorCodes.AQUA + FormatCodes.BOLD + "Duration: " + FormatCodes.RESET +
+                        (el.first.duration(el.second)/MinecraftServer.TPS).toString() + "s"
+            else null
+            val description = ColorCodes.DARK_AQUA + el.first.description()
+
+            listOfNotNull(
+                title,
+                levelText,
+                cooldownText,
+                durationText,
+                description
+            )
+        }
+    }
+
     private fun setName(item: ItemStack, name: String) {
         val itemMeta: ItemMeta = item.itemMeta ?: return
         itemMeta.setDisplayName(name)
@@ -70,10 +101,7 @@ object ItemBuilder {
         addAttribute(item, weapon.damage, AttributeStrings.Item.ATTACK_DAMAGE,
             Attribute.GENERIC_ATTACK_DAMAGE, weapon.slot)
 
-        // Adds effects to the items lore, as "Effect Name LEVEL"
-        addLore(item, weapon.effects.toList().map{ el ->
-            ColorCodes.GREEN + el.first.name.lowercase().replaceFirstChar { c -> c.uppercase() } + " " + el.second
-        })
+        addLore(item, generateLoreText(weapon.effects))
 
         return addEffects(item, weapon.effects)
     }
@@ -86,10 +114,7 @@ object ItemBuilder {
         addAttribute(item, armorPiece.armorToughness, AttributeStrings.Item.ARMOR_THOUGHNESS,
             Attribute.GENERIC_ARMOR_TOUGHNESS, armorPiece.slot)
 
-        // Adds effects to the items lore, as "Effect Name LEVEL"
-        addLore(item, armorPiece.effects.toList().map{ el ->
-            ColorCodes.GREEN + el.first.name.lowercase().capitalize() + " " + el.second
-        })
+        addLore(item, generateLoreText(armorPiece.effects))
 
         return addEffects(item, armorPiece.effects)
     }
