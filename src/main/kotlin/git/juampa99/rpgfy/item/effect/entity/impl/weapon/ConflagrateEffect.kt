@@ -2,6 +2,7 @@ package git.juampa99.rpgfy.item.effect.entity.impl.weapon
 
 import git.juampa99.rpgfy.item.effect.entity.WeaponEffect
 import git.juampa99.rpgfy.utils.number.cap
+import git.juampa99.rpgfy.utils.number.effectCap
 import net.minecraft.server.v1_16_R3.MinecraftServer
 import org.bukkit.Material
 import org.bukkit.entity.LivingEntity
@@ -32,7 +33,7 @@ object ConflagrateEffect: WeaponEffect("CONFLAGRATE") {
     override fun isDebuff(): Boolean = false
 
     override fun cooldown(level: Int): Int {
-        val seconds = (60 - (level.cap(5) * 6))
+        val seconds = (60 - (level.effectCap() * 6))
         return seconds * MinecraftServer.TPS
     }
 

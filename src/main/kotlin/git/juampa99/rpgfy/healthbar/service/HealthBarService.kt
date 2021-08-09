@@ -72,7 +72,7 @@ object HealthBarService {
                               maxHealth: Double, color: Color): String {
         val totalBars = ceil((currentHealth/maxHealth)*10).toInt()
         val healthBars = "|".repeat(totalBars)
-        val missingHealthBars = "-".repeat(10-totalBars)
+        val missingHealthBars = " ".repeat(10 - totalBars)
 
         return "$color[$healthBars$missingHealthBars]${FormatCodes.RESET}"
     }

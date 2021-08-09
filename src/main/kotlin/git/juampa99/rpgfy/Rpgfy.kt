@@ -14,6 +14,7 @@ import git.juampa99.rpgfy.droptable.builder.DroptableEntryBuilder
 import git.juampa99.rpgfy.item.builder.entity.Item
 import git.juampa99.rpgfy.item.custom.builder.ItemYamlBuilder
 import git.juampa99.rpgfy.item.custom.registry.CustomItemRegistry
+import git.juampa99.rpgfy.item.effect.entity.impl.armor.FireAura
 import git.juampa99.rpgfy.item.effect.entity.impl.armor.RepelEffect
 import git.juampa99.rpgfy.item.effect.entity.impl.weapon.ConflagrateEffect
 import git.juampa99.rpgfy.item.effect.entity.impl.weapon.LightningEffect
@@ -58,6 +59,7 @@ class Rpgfy : JavaPlugin() {
 
         // Armor effects
         EffectRegistry.register(RepelEffect)
+        EffectRegistry.register(FireAura)
     }
 
     private fun registerEvents() {

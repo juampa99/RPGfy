@@ -10,6 +10,7 @@ import git.juampa99.rpgfy.item.effect.registry.EffectRegistry
 import org.bukkit.Bukkit
 import org.bukkit.Bukkit.getLogger
 import org.bukkit.entity.LivingEntity
+import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 
 object EffectService {
@@ -32,6 +33,16 @@ object EffectService {
 
         return NBTEditor.createStackWithTags(itemStack,
             "effects", effects.map { p -> Pair(p.first.name, p.second) })
+    }
+
+    fun triggerAllArmorEffects(entity: LivingEntity, target: LivingEntity) {
+        val armor: List<ItemStack> = listOfNotNull(
+            entity.equipment?.chestplate, entity.equipment?.helmet,
+            entity.equipment?.leggings, entity.equipment?.boots
+        )
+
+        armor.forEach { item -> hasEffects(item) }
+        armor.forEach { item -> triggerEffects(item, entity, target) }
     }
 
     /**

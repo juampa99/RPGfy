@@ -60,15 +60,15 @@ object ItemBuilder {
                 ColorCodes.AQUA + FormatCodes.BOLD + "Duration: " + FormatCodes.RESET +
                         (el.first.duration(el.second)/MinecraftServer.TPS).toString() + "s"
             else null
-            val description = ColorCodes.DARK_AQUA + el.first.description()
+            val description = el.first.description().split("\n")
+                                 .map { str -> ColorCodes.DARK_AQUA + str}
 
             listOfNotNull(
                 title,
                 levelText,
                 cooldownText,
-                durationText,
-                description
-            )
+                durationText
+            ) + description
         }
     }
 
