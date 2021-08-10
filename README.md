@@ -199,7 +199,31 @@ they can be spawned using the /spawngear command or added to a mob's droptable.
 
 ### Armor-specific traits
 
-Documentation in progress
+<table>
+    <tr>
+        <th>Trait</th>
+        <th>Description</th>
+        <th>Accepts</th>
+        <th>Default</th>
+        <th>Required</th>
+    </tr>
+    <tr>
+        <td>armor</td>
+        <td>Armor value</td>
+        <td style="text-align: center;">0 - inf</td>
+        <td>Defaults to the armor's base value</td>
+        <td style="text-align: center;">No</td>
+    </tr>
+    <tr>
+        <td>armor</td>
+        <td>Armor value</td>
+        <td style="text-align: center;">0 - inf</td>
+        <td>Defaults to the armor's base value</td>
+        <td style="text-align: center;">No</td>
+    </tr>
+</table>
+
+For sake of simplicity I used "inf", but the actual max value is 2,147,483,647 (max integer value).
 
 ## Healthbar
 
@@ -208,6 +232,20 @@ Displays monster's health over their head
 ## Developers
 
 Documentation in progress
+
+Effects
+
+To create new effects, go to the item/effect/entity/impl and create a new object extending either
+WeaponEffect or ArmorEffect, pass the name of the effect to the parent class, and implement
+methods. Remember cooldown() and duration() unit is TPS, multiply the seconds you want the 
+cooldown or duration to last by the constant MinecraftServer.TPS
+
+After you're done with your effect, go to Rpgfy (main class) and register your effect in the
+method registerEffects() just like the rest.
+
+Items
+
+To create new item classes, create a new class extending either Weapon or ArmorPiece.
 
 ## Known Issues
 

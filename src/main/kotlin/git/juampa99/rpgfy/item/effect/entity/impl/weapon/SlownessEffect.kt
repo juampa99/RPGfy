@@ -13,8 +13,17 @@ object SlownessEffect : WeaponEffect("SLOWNESS") {
 
     override fun trigger(triggeredBy: LivingEntity,
                          target: LivingEntity, level: Int) {
+        val amplifier = when(level.effectCap()) {
+            1 -> 1
+            2 -> 1
+            3 -> 2
+            4 -> 2
+            5 -> 3
+            else -> 1
+        }
+
         target.addPotionEffect(PotionEffect(PotionEffectType.SLOW,
-            duration(level.effectCap()), level.effectCap()))
+            duration(level.effectCap()), amplifier))
     }
 
     override fun description(): String = "Slows target"

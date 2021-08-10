@@ -1,6 +1,7 @@
 package git.juampa99.rpgfy.droptable.listener
 
 import git.juampa99.rpgfy.droptable.service.DroptableService
+import git.juampa99.rpgfy.utils.string.toSlug
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDeathEvent

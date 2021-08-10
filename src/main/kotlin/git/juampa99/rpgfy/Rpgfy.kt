@@ -19,6 +19,8 @@ import git.juampa99.rpgfy.item.effect.entity.impl.armor.RepelEffect
 import git.juampa99.rpgfy.item.effect.entity.impl.weapon.ConflagrateEffect
 import git.juampa99.rpgfy.item.effect.entity.impl.weapon.LightningEffect
 import git.juampa99.rpgfy.item.effect.entity.impl.weapon.PoisonEffect
+import git.juampa99.rpgfy.utils.string.capitalizeAll
+import git.juampa99.rpgfy.utils.string.toSlug
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.plugin.java.JavaPlugin
@@ -94,7 +96,11 @@ class Rpgfy : JavaPlugin() {
         logger.info("Loading droptable from $filePath..")
 
         // This could be done taking entries of the yaml file
-        val entities = listOf("zombie", "creeper", "skeleton", "enderman")
+        val entities = listOf("Blaze", "Cave_Spider", "Creeper", "Drowned", "Elder_Guardian",
+            "Enderman", "Endermite", "Evoker", "Giant", "Guardian", "Husk", "Illager", "Illusioner", "Piglin",
+            "Piglin_Abstract", "Piglin_Brute", "PigZombie", "Pillager", "Raider", "Ravager", "Silverfish", "Skeleton",
+            "Spellcaster", "Spider", "Stray", "Vex", "Vindicator", "Witch", "Wither", "Wither_Skeleton", "Zoglin",
+            "Zombie", "Zombie_Villager").map { entity -> entity.toSlug() }
         val droptable = mutableMapOf<String, List<DropTableEntry>>()
 
         for(entity in entities) {
